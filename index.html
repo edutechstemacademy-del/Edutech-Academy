@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Edutech Academy helps CSEC students prepare with focused tutorials, revision videos, self-assessment quizzes, live classes, and printed study guides."
+    />
+    <title>Edutech Academy | CSEC Online Learning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=Source+Serif+4:wght@650;750&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Main navigation">
+      <a class="brand" href="index.html" aria-label="Edutech Academy home">
+        <img src="assets/edutech-academy-logo.png" alt="Edutech Academy logo" />
+        <span>Edutech Academy</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#subjects">CSEC Subjects</a>
+        <a href="#live">Live Revision</a>
+        <a href="#guides">Study Guides</a>
+        <a href="#cape">CAPE Soon</a>
+      </nav>
+      <a class="nav-action" href="#subjects">Start Learning</a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <h1 id="hero-title">CSEC success starts here.</h1>
+          <p>
+            Focused lessons, exam-style revision, self-assessment quizzes, live classes, and printed study guides for serious Caribbean students.
+          </p>
+          <div class="hero-actions" aria-label="Homepage actions">
+            <a class="button primary" href="#subjects">Explore CSEC Subjects</a>
+            <a class="button secondary" href="#guides">Request Printed Guide</a>
+          </div>
+        </div>
+        <div class="hero-mark" aria-hidden="true">
+          <img src="assets/edutech-academy-logo.png" alt="" />
+        </div>
+      </section>
+
+      <section class="subject-band" id="subjects" aria-labelledby="subjects-title">
+        <div class="section-copy">
+          <h2 id="subjects-title">Choose Your CSEC Subject</h2>
+          <p>Start with one course now and add more subjects as the academy grows.</p>
+        </div>
+        <div class="subject-grid">
+          <a class="subject-link mathematics" href="subjects/csec-mathematics.html">
+            <span>CSEC Mathematics</span>
+          </a>
+          <a class="subject-link additional" href="subjects/csec-additional-mathematics.html">
+            <span>CSEC Additional Mathematics</span>
+          </a>
+          <a class="subject-link biology" href="subjects/csec-biology.html">
+            <span>CSEC Biology</span>
+          </a>
+          <a class="subject-link chemistry" href="subjects/csec-chemistry.html">
+            <span>CSEC Chemistry</span>
+          </a>
+          <a class="subject-link physics" href="subjects/csec-physics.html">
+            <span>CSEC Physics</span>
+          </a>
+          <a class="subject-link technology" href="subjects/csec-information-technology.html">
+            <span>CSEC Information Technology</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="learning-system" aria-labelledby="learning-title">
+        <div class="feature-lead">
+          <h2 id="learning-title">Built For Revision That Actually Moves Scores</h2>
+          <p>
+            Each subject can grow from a simple lesson hub into a complete subscription course with videos, practice, live support, and offline resources.
+          </p>
+        </div>
+        <div class="feature-list">
+          <article>
+            <span>01</span>
+            <h3>Tutorials & Training Videos</h3>
+            <p>Topic-by-topic explanations, worked examples, diagrams, and short revision clips.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Past-Paper-Style Revision</h3>
+            <p>Structured exam practice with mark-scheme thinking, model answers, and common mistakes.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Self-Assessment Quizzes</h3>
+            <p>Quick checks after each topic so students know what to revisit before exam season.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="split-section" id="live" aria-labelledby="live-title">
+        <div>
+          <h2 id="live-title">Live Revision Classes</h2>
+          <p>
+            Subscribers can join scheduled online revision sessions, ask questions, and revisit class recordings. Students who need extra help can request physical class booking when available.
+          </p>
+        </div>
+        <a class="button dark" href="mailto:info@edutechacademy.com?subject=Live%20Revision%20Class%20Enquiry">Ask About Live Classes</a>
+      </section>
+
+      <section class="guide-section" id="guides" aria-labelledby="guide-title">
+        <div class="guide-panel">
+          <h2 id="guide-title">Offline Study, Still Connected</h2>
+          <p>
+            Students can request printed study guides for revision away from the screen, with matching online quizzes and class support.
+          </p>
+          <a class="button primary" href="mailto:info@edutechacademy.com?subject=Printed%20Study%20Guide%20Request">Request Printed Study Guide</a>
+        </div>
+      </section>
+
+      <section class="cape-section" id="cape" aria-labelledby="cape-title">
+        <p>CAPE Subjects Coming Soon</p>
+        <h2 id="cape-title">The platform starts with CSEC and is ready to expand.</h2>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Edutech Academy</span>
+      <a href="mailto:info@edutechacademy.com">info@edutechacademy.com</a>
+    </footer>
+    <script>
+      window.addEventListener("load", () => {
+        if (!window.location.hash) return;
+        const target = document.querySelector(window.location.hash);
+        target?.scrollIntoView({ block: "start", behavior: "instant" });
+      });
+    </script>
+  </body>
+</html>
