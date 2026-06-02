@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CSEC Biology Lesson 4 from Edutech Academy: Feeding Relationships with video, flashcards, and a 25-mark self-assessment quiz."
+    />
+    <title>Lesson 4: Feeding Relationships | Edutech Academy</title>
+    <script>
+      (() => {
+        const mcAnswers = { mc1: "B", mc2: "A", mc3: "A", mc4: "B", mc5: "C", mc6: "B", mc7: "B", mc8: "B", mc9: "D", mc10: "C" };
+        const mcExplanations = {
+          mc1: "A herbivore feeds on plant matter.",
+          mc2: "Producers are usually green plants.",
+          mc3: "The feeding levels in a food chain are trophic levels.",
+          mc4: "Arrows show the direction of food and energy flow.",
+          mc5: "The Anolis lizard feeds on the primary consumer, so it is a secondary consumer.",
+          mc6: "The Sun is the primary source of energy for most food chains.",
+          mc7: "About 10% of energy entering a consumer level is transferred to the next level.",
+          mc8: "Decomposers release carbon dioxide as they break down dead material.",
+          mc9: "A top predator such as a broad-winged hawk is a tertiary consumer in this example.",
+          mc10: "A food web shows links between multiple food chains in a community.",
+        };
+        const validChains = [
+          ["grass", "bush-crickets", "dominican-anole", "antilles-racer"],
+          ["grass", "bush-crickets", "dominican-anole", "barn-owl"],
+          ["forest-trees", "bush-crickets", "dominican-anole", "antilles-racer"],
+          ["forest-trees", "bush-crickets", "dominican-anole", "barn-owl"],
+          ["forest-trees", "caterpillars", "dominican-anole", "antilles-racer"],
+          ["forest-trees", "caterpillars", "dominican-anole", "barn-owl"],
+        ];
+        const herbivores = ["bush-crickets", "caterpillars", "common-fruit-bats"];
+        const carnivores = ["dominican-anole", "mangrove-cuckoo", "antilles-racer", "barn-owl"];
+        const validLosses = ["respiration", "heat", "movement", "egestion", "excretion"];
+        const validPyramidReasons = ["larger-top", "energy-lost"];
+
+        function normalizeText(value) {
+          return value.trim().toLowerCase().replace(/\s+/g, " ");
+        }
+
+        function formValue(form, name) {
+          const field = form.elements.namedItem(name);
+          return field ? field.value : "";
+        }
+
+        function checkedValues(form, name) {
+          return Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map((input) => input.value);
+        }
+
+        function includesAny(text, terms) {
+          return terms.some((term) => text.includes(term));
+        }
+
+        function markQuestion(question, points, maxPoints, message) {
+          if (!question) return;
+          const feedback = question.querySelector(".quiz-feedback");
+          question.classList.remove("is-correct", "is-incorrect", "is-unanswered");
+          question.classList.add(points === maxPoints ? "is-correct" : points === 0 ? "is-incorrect" : "is-unanswered");
+          if (feedback) feedback.textContent = message;
+        }
+
+        function countValidSelections(values, validValues, maxPoints) {
+          const validCount = values.filter((value) => validValues.includes(value)).length;
+          const invalidCount = values.length - validCount;
+          return Math.max(0, Math.min(validCount, maxPoints) - invalidCount);
+        }
+
+        function gradeLesson4Quiz(quiz) {
+          const result = document.querySelector("#lesson4QuizResult");
+          let score = 0;
+
+          Object.entries(mcAnswers).forEach(([questionId, answer]) => {
+            const question = quiz.querySelector(`[data-question="${questionId}"]`);
+            const selected = quiz.querySelector(`input[name="${questionId}"]:checked`);
+            if (!selected) {
+              markQuestion(question, 0, 1, `No answer selected. Correct answer: ${answer}. ${mcExplanations[questionId]}`);
+              return;
+            }
+            if (selected.value === answer) {
+              score += 1;
+              markQuestion(question, 1, 1, `Correct. ${mcExplanations[questionId]}`);
+              return;
+            }
+            markQuestion(question, 0, 1, `Not quite. Correct answer: ${answer}. ${mcExplanations[questionId]}`);
+          });
+
+          const foodWebQuestion = quiz.querySelector('[data-question="food-web"]');
+          let foodWebScore = 0;
+          const selectedChain = ["chain1", "chain2", "chain3", "chain4"].map((name) => formValue(quiz, name));
+          if (validChains.some((chain) => chain.every((organism, index) => organism === selectedChain[index]))) foodWebScore += 2;
+          if (herbivores.includes(formValue(quiz, "herbivore"))) foodWebScore += 1;
+          if (carnivores.includes(formValue(quiz, "carnivore"))) foodWebScore += 1;
+
+          const whatIf = normalizeText(formValue(quiz, "whatIf"));
+          if (includesAny(whatIf, ["decrease", "decline", "reduce", "fall"])) foodWebScore += 1;
+          if (whatIf.includes("bush") && includesAny(whatIf, ["food", "energy", "prey"])) foodWebScore += 1;
+          if (includesAny(whatIf, ["food web", "complex", "multiple", "several"])) foodWebScore += 1;
+          if (includesAny(whatIf, ["caterpillar", "alternative", "switch"])) foodWebScore += 1;
+
+          const firstLevel = checkedValues(quiz, "firstLevel");
+          foodWebScore += countValidSelections(firstLevel, ["grass", "forest-trees"], 2);
+          score += foodWebScore;
+          markQuestion(
+            foodWebQuestion,
+            foodWebScore,
+            10,
+            `Section B score: ${foodWebScore} / 10. Model chain examples include Grass -> Bush-crickets -> Dominican anole -> Antilles racer, or Forest trees -> Caterpillars -> Dominican anole -> Barn owl. Producers at the first trophic level are grass and forest trees.`
+          );
+
+          const energyQuestion = quiz.querySelector('[data-question="energy"]');
+          let energyScore = 0;
+          energyScore += countValidSelections(checkedValues(quiz, "energyLosses"), validLosses, 2);
+          energyScore += countValidSelections(checkedValues(quiz, "pyramidReasons"), validPyramidReasons, 2);
+          const biomass = normalizeText(formValue(quiz, "biomass"));
+          if (includesAny(biomass, ["quantity", "amount", "mass"]) && includesAny(biomass, ["biological", "living", "material", "matter"])) energyScore += 1;
+          score += energyScore;
+          markQuestion(
+            energyQuestion,
+            energyScore,
+            5,
+            `Section C score: ${energyScore} / 5. Energy is lost through respiration, heat, movement, egestion, and excretion. Biomass is the quantity of biological material.`
+          );
+
+          if (result) {
+            result.textContent = `Your score: ${score} / 25`;
+            result.setAttribute("tabindex", "-1");
+            result.focus();
+          }
+        }
+
+        function resetLesson4Quiz(quiz) {
+          const result = document.querySelector("#lesson4QuizResult");
+          quiz.reset();
+          quiz.querySelectorAll(".quiz-question").forEach((question) => {
+            question.classList.remove("is-correct", "is-incorrect", "is-unanswered");
+            const feedback = question.querySelector(".quiz-feedback");
+            if (feedback) feedback.textContent = "";
+          });
+          if (result) result.textContent = "";
+        }
+
+        function scrollToHash() {
+          if (!window.location.hash) return;
+          const target = document.getElementById(window.location.hash.slice(1));
+          if (target) target.scrollIntoView({ block: "start", behavior: "auto" });
+        }
+
+        document.addEventListener("click", (event) => {
+          if (!(event.target instanceof Element)) return;
+          const flashcardToggle = event.target.closest(".flashcard-toggle");
+          if (flashcardToggle) {
+            const card = flashcardToggle.closest(".flashcard");
+            if (!card) return;
+            const isOpen = card.classList.toggle("is-open");
+            flashcardToggle.setAttribute("aria-expanded", String(isOpen));
+            return;
+          }
+          if (event.target.closest("#resetLesson4Quiz")) {
+            const quiz = document.querySelector("#lesson4Quiz");
+            if (quiz) resetLesson4Quiz(quiz);
+          }
+        });
+
+        document.addEventListener("submit", (event) => {
+          if (!(event.target instanceof HTMLFormElement) || event.target.id !== "lesson4Quiz") return;
+          event.preventDefault();
+          gradeLesson4Quiz(event.target);
+        });
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", scrollToHash);
+        } else {
+          scrollToHash();
+        }
+        window.addEventListener("load", () => window.setTimeout(scrollToHash, 100));
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=Source+Serif+4:wght@650;750&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Main navigation">
+      <a class="brand" href="../index.html" aria-label="Edutech Academy home">
+        <img src="../assets/edutech-academy-logo.png" alt="Edutech Academy logo" />
+        <span>Edutech Academy</span>
+      </a>
+      <nav class="nav-links lesson-nav" aria-label="Biology lesson navigation">
+        <a href="csec-biology.html">Biology Course</a>
+        <a href="#video">Video</a>
+        <a href="#flashcards">Flashcards</a>
+        <a href="#quiz">Quiz</a>
+      </nav>
+      <a class="nav-action" href="../index.html#subjects">All Subjects</a>
+    </header>
+
+    <main class="lesson-page">
+      <section class="lesson-hero" aria-labelledby="lesson-title">
+        <div class="lesson-hero-copy">
+          <h1 id="lesson-title">Lesson 4:<br />Feeding<br />Relationships</h1>
+          <p>
+            Follow the movement of energy through food chains, food webs, trophic levels, ecological pyramids, and Caribbean feeding examples.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#video">Watch Lesson</a>
+            <a class="button secondary" href="#quiz">Take Quiz</a>
+          </div>
+        </div>
+        <div class="lesson-metrics" aria-label="Lesson details">
+          <div>
+            <span>Section</span>
+            <strong>A</strong>
+          </div>
+          <div>
+            <span>Objectives</span>
+            <strong>3.1-3.5</strong>
+          </div>
+          <div>
+            <span>Quiz</span>
+            <strong>25 marks</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="lesson-layout">
+        <aside class="lesson-outline" aria-label="Lesson outline">
+          <h2>Lesson Path</h2>
+          <ol>
+            <li><a href="#video">Watch the training video</a></li>
+            <li><a href="#guide">Review the study summary</a></li>
+            <li><a href="#flashcards">Practise the flashcards</a></li>
+            <li><a href="#quiz">Complete the quiz</a></li>
+          </ol>
+        </aside>
+
+        <div class="lesson-content">
+          <section class="video-panel" id="video" aria-labelledby="video-title">
+            <div class="lesson-section-heading">
+              <h2 id="video-title">The Energy Journey</h2>
+              <p>Watch how energy moves from producers to consumers and why food chains rarely extend beyond four or five trophic levels.</p>
+            </div>
+            <video controls preload="none" poster="../assets/edutech-academy-logo.png">
+              <source src="../assets/videos/biology/lesson4/the-energy-journey.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </section>
+
+          <section class="study-guide" id="guide" aria-labelledby="guide-title">
+            <div class="lesson-section-heading">
+              <h2 id="guide-title">Study Guide Summary</h2>
+              <p>Key feeding relationship ideas for CSEC Biology SO 3.1 to 3.5.</p>
+            </div>
+            <div class="guide-grid">
+              <article>
+                <h3>Food Chains</h3>
+                <p>A food chain shows feeding relationships. Arrows point from food to consumer because they show energy flow.</p>
+              </article>
+              <article>
+                <h3>Trophic Levels</h3>
+                <p>Each feeding position is a trophic level: producer, primary consumer, secondary consumer, and tertiary consumer.</p>
+              </article>
+              <article>
+                <h3>Consumers</h3>
+                <p>Herbivores eat plants, carnivores eat animals, and omnivores feed at more than one trophic level.</p>
+              </article>
+              <article>
+                <h3>Food Webs</h3>
+                <p>Food webs show interconnected food chains, making ecosystems more flexible when one population changes.</p>
+              </article>
+              <article>
+                <h3>Energy Transfer</h3>
+                <p>Only about 10% of energy entering a consumer level is usually passed to the next level.</p>
+              </article>
+              <article>
+                <h3>Ecological Pyramids</h3>
+                <p>Pyramids of numbers, biomass, and energy represent population size, biological material, and energy transfer.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="flashcard-section" id="flashcards" aria-labelledby="flashcards-title">
+            <div class="lesson-section-heading">
+              <h2 id="flashcards-title">Lesson Flashcards</h2>
+              <p>Use these as quick oral checks before attempting the 25-mark quiz.</p>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Vocabulary and Trophic Levels</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define food chain.</button>
+                <div class="flashcard-answer">A diagram showing feeding relationships where arrows represent energy flow from one organism to the next.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define trophic level.</button>
+                <div class="flashcard-answer">The specific feeding level an organism occupies in a food chain.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Compare producer, consumer, herbivore, carnivore, and omnivore.</button>
+                <div class="flashcard-answer">Producers make food using sunlight. Consumers feed on organisms. Herbivores eat plants, carnivores eat animals, and omnivores eat both.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Energy Flow</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">What do arrows in a food chain represent?</button>
+                <div class="flashcard-answer">They show the direction of food and energy flow, pointing away from the food and toward the consumer.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">What percentage of energy is usually available for the next trophic level?</button>
+                <div class="flashcard-answer">About 10%. Energy is lost as heat, movement, respiration, egested material, and excreted waste.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Why are most food chains short?</button>
+                <div class="flashcard-answer">So much energy is lost at each level that there is too little left to support many top predators after four or five trophic levels.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Dominica Forest Food Web</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Identify the producers.</button>
+                <div class="flashcard-answer">Grass and forest trees, including their leaves and fruits.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Identify primary consumers.</button>
+                <div class="flashcard-answer">Bush-crickets, caterpillars, and common fruit bats.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Identify secondary and tertiary consumers.</button>
+                <div class="flashcard-answer">Dominican anole and mangrove cuckoo are secondary consumers. Antilles racer and barn owl are tertiary consumers.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Ecological Pyramids and Roles</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Compare pyramids of numbers, biomass, and energy.</button>
+                <div class="flashcard-answer">Numbers show estimated populations, biomass shows biological material, and energy shows energy flowing between trophic levels.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define decomposers.</button>
+                <div class="flashcard-answer">Bacteria and fungi that secrete enzymes onto dead material and recycle carbon by releasing carbon dioxide.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">What is biological control?</button>
+                <div class="flashcard-answer">The use of predators or parasites of pest species to reduce crop damage.</div>
+              </article>
+            </div>
+          </section>
+
+          <section class="quiz-section" id="quiz" aria-labelledby="quiz-title">
+            <div class="lesson-section-heading">
+              <h2 id="quiz-title">Self-Assessment Quiz</h2>
+              <p>Answer all sections. The food-chain section accepts valid chains from the Dominica forest data.</p>
+            </div>
+            <form id="lesson4Quiz" class="quiz-form">
+              <div class="quiz-meta">
+                <span>CSEC Biology SO 3.1-3.5</span>
+                <span>Total marks: 25</span>
+              </div>
+
+              <fieldset class="quiz-question" data-question="mc1">
+                <legend>1. Which is the best definition for a herbivore?</legend>
+                <label><input type="radio" name="mc1" value="A" /> A. An organism that produces its own food.</label>
+                <label><input type="radio" name="mc1" value="B" /> B. An animal that feeds on plant matter.</label>
+                <label><input type="radio" name="mc1" value="C" /> C. A microorganism that feeds on dead matter.</label>
+                <label><input type="radio" name="mc1" value="D" /> D. An animal that feeds on other animals.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc2">
+                <legend>2. In an ecosystem, producers are typically:</legend>
+                <label><input type="radio" name="mc2" value="A" /> A. Green plants.</label>
+                <label><input type="radio" name="mc2" value="B" /> B. Bacteria and fungi.</label>
+                <label><input type="radio" name="mc2" value="C" /> C. Primary consumers.</label>
+                <label><input type="radio" name="mc2" value="D" /> D. Tertiary consumers.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc3">
+                <legend>3. The different feeding levels in a food chain are known as:</legend>
+                <label><input type="radio" name="mc3" value="A" /> A. Trophic levels.</label>
+                <label><input type="radio" name="mc3" value="B" /> B. Communities.</label>
+                <label><input type="radio" name="mc3" value="C" /> C. Ecological niches.</label>
+                <label><input type="radio" name="mc3" value="D" /> D. Populations.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc4">
+                <legend>4. In a diagram of a food chain, what do arrows represent?</legend>
+                <label><input type="radio" name="mc4" value="A" /> A. The movement of organisms between habitats.</label>
+                <label><input type="radio" name="mc4" value="B" /> B. The direction of food and energy flow.</label>
+                <label><input type="radio" name="mc4" value="C" /> C. The increase in population size.</label>
+                <label><input type="radio" name="mc4" value="D" /> D. The amount of waste produced by each organism.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc5">
+                <legend>5. Mangrove trees -> moth caterpillars -> Anolis lizard -> pearly-eyed thrasher. What is the Anolis lizard?</legend>
+                <label><input type="radio" name="mc5" value="A" /> A. Producer.</label>
+                <label><input type="radio" name="mc5" value="B" /> B. Primary consumer.</label>
+                <label><input type="radio" name="mc5" value="C" /> C. Secondary consumer.</label>
+                <label><input type="radio" name="mc5" value="D" /> D. Tertiary consumer.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc6">
+                <legend>6. What is the primary source of energy for almost all food chains?</legend>
+                <label><input type="radio" name="mc6" value="A" /> A. Decomposers.</label>
+                <label><input type="radio" name="mc6" value="B" /> B. The Sun.</label>
+                <label><input type="radio" name="mc6" value="C" /> C. Soil nutrients.</label>
+                <label><input type="radio" name="mc6" value="D" /> D. Oxygen.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc7">
+                <legend>7. Approximately what percentage of energy entering a consumer trophic level is transferred to the next level?</legend>
+                <label><input type="radio" name="mc7" value="A" /> A. 1%</label>
+                <label><input type="radio" name="mc7" value="B" /> B. 10%</label>
+                <label><input type="radio" name="mc7" value="C" /> C. 50%</label>
+                <label><input type="radio" name="mc7" value="D" /> D. 90%</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc8">
+                <legend>8. Decomposers play a vital role in the carbon cycle by:</legend>
+                <label><input type="radio" name="mc8" value="A" /> A. Acting as the first trophic level in all food webs.</label>
+                <label><input type="radio" name="mc8" value="B" /> B. Releasing carbon dioxide by breaking down dead material.</label>
+                <label><input type="radio" name="mc8" value="C" /> C. Absorbing heat to prevent energy loss.</label>
+                <label><input type="radio" name="mc8" value="D" /> D. Providing oxygen through respiration.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc9">
+                <legend>9. A broad-winged hawk feeding at the top of a food chain is classified as a:</legend>
+                <label><input type="radio" name="mc9" value="A" /> A. Producer.</label>
+                <label><input type="radio" name="mc9" value="B" /> B. Herbivore.</label>
+                <label><input type="radio" name="mc9" value="C" /> C. Primary consumer.</label>
+                <label><input type="radio" name="mc9" value="D" /> D. Tertiary consumer.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc10">
+                <legend>10. What is the main difference between a food chain and a food web?</legend>
+                <label><input type="radio" name="mc10" value="A" /> A. A food web shows one path, while a food chain shows many paths.</label>
+                <label><input type="radio" name="mc10" value="B" /> B. A food chain shows many paths, while a food web shows one.</label>
+                <label><input type="radio" name="mc10" value="C" /> C. A food web shows links between multiple food chains in a community.</label>
+                <label><input type="radio" name="mc10" value="D" /> D. A food chain includes decomposers, but a food web does not.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="food-web">
+                <legend>Section B: Food web analysis</legend>
+                <p class="question-note">
+                  Build a valid four-organism food chain from the Dominica forest data. Choose organisms in the order energy flows.
+                </p>
+                <div class="matching-grid">
+                  <label class="short-answer">1. Producer
+                    <select name="chain1">
+                      <option value="">Choose</option>
+                      <option value="grass">Grass</option>
+                      <option value="forest-trees">Forest trees</option>
+                      <option value="bush-crickets">Bush-crickets</option>
+                      <option value="caterpillars">Caterpillars</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">2. Primary consumer
+                    <select name="chain2">
+                      <option value="">Choose</option>
+                      <option value="bush-crickets">Bush-crickets</option>
+                      <option value="caterpillars">Caterpillars</option>
+                      <option value="common-fruit-bats">Common fruit bats</option>
+                      <option value="dominican-anole">Dominican anole</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">3. Secondary consumer
+                    <select name="chain3">
+                      <option value="">Choose</option>
+                      <option value="dominican-anole">Dominican anole</option>
+                      <option value="mangrove-cuckoo">Mangrove cuckoo</option>
+                      <option value="antilles-racer">Antilles racer</option>
+                      <option value="barn-owl">Barn owl</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">4. Tertiary consumer
+                    <select name="chain4">
+                      <option value="">Choose</option>
+                      <option value="antilles-racer">Antilles racer</option>
+                      <option value="barn-owl">Barn owl</option>
+                      <option value="mangrove-cuckoo">Mangrove cuckoo</option>
+                      <option value="common-fruit-bats">Common fruit bats</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">One herbivore
+                    <select name="herbivore">
+                      <option value="">Choose</option>
+                      <option value="bush-crickets">Bush-crickets</option>
+                      <option value="caterpillars">Caterpillars</option>
+                      <option value="common-fruit-bats">Common fruit bats</option>
+                      <option value="dominican-anole">Dominican anole</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">One carnivore
+                    <select name="carnivore">
+                      <option value="">Choose</option>
+                      <option value="dominican-anole">Dominican anole</option>
+                      <option value="mangrove-cuckoo">Mangrove cuckoo</option>
+                      <option value="antilles-racer">Antilles racer</option>
+                      <option value="barn-owl">Barn owl</option>
+                      <option value="grass">Grass</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="short-answer">If bush-crickets decreased significantly, explain the likely effect on Dominican anoles.
+                  <textarea name="whatIf"></textarea>
+                </label>
+                <p class="question-note">Select the organisms at the first trophic level.</p>
+                <label><input type="checkbox" name="firstLevel" value="grass" /> Grass</label>
+                <label><input type="checkbox" name="firstLevel" value="forest-trees" /> Forest trees</label>
+                <label><input type="checkbox" name="firstLevel" value="bush-crickets" /> Bush-crickets</label>
+                <label><input type="checkbox" name="firstLevel" value="dominican-anole" /> Dominican anole</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="energy">
+                <legend>Section C: Energy flow and pyramids</legend>
+                <p class="question-note">Select two ways energy is lost from a trophic level.</p>
+                <label><input type="checkbox" name="energyLosses" value="respiration" /> Respiration</label>
+                <label><input type="checkbox" name="energyLosses" value="heat" /> Heat loss</label>
+                <label><input type="checkbox" name="energyLosses" value="movement" /> Movement</label>
+                <label><input type="checkbox" name="energyLosses" value="photosynthesis" /> Photosynthesis by consumers</label>
+                <p class="question-note">Select two reasons there are usually fewer organisms at the top of a pyramid of numbers.</p>
+                <label><input type="checkbox" name="pyramidReasons" value="larger-top" /> Organisms at higher trophic levels tend to be larger.</label>
+                <label><input type="checkbox" name="pyramidReasons" value="energy-lost" /> Energy is lost at each level, leaving less energy to support top consumers.</label>
+                <label><input type="checkbox" name="pyramidReasons" value="more-sunlight" /> Top predators receive more sunlight than producers.</label>
+                <label class="short-answer">Define biomass as it relates to ecological pyramids.
+                  <input type="text" name="biomass" autocomplete="off" />
+                </label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <div class="quiz-actions">
+                <button class="button primary" type="submit">Submit Quiz</button>
+                <button class="button secondary" id="resetLesson4Quiz" type="button">Reset</button>
+              </div>
+              <p id="lesson4QuizResult" class="quiz-result" aria-live="polite"></p>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

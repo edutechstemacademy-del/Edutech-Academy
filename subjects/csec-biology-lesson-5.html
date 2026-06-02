@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CSEC Biology Lesson 5 from Edutech Academy: Decomposers and Symbiosis with video, flashcards, and a 20-mark self-assessment quiz."
+    />
+    <title>Lesson 5: Decomposers and Symbiosis | Edutech Academy</title>
+    <script>
+      (() => {
+        const mcAnswers = { mc1: "B", mc2: "C", mc3: "B", mc4: "A", mc5: "D" };
+        const mcExplanations = {
+          mc1: "Symbiosis is a close relationship between two or more different species.",
+          mc2: "Nitrogen-fixing bacteria and legumes both benefit, so the relationship is mutualism.",
+          mc3: "The egret benefits while the cattle are unaffected, so this is commensalism.",
+          mc4: "Bacteria and fungi are the main decomposers.",
+          mc5: "Decomposition releases carbon dioxide, ammonia, and other simple compounds.",
+        };
+
+        function normalizeText(value) {
+          return value.trim().toLowerCase().replace(/\s+/g, " ");
+        }
+
+        function formValue(form, name) {
+          const field = form.elements.namedItem(name);
+          return field ? field.value : "";
+        }
+
+        function includesAny(text, terms) {
+          return terms.some((term) => text.includes(term));
+        }
+
+        function markQuestion(question, points, maxPoints, message) {
+          if (!question) return;
+          const feedback = question.querySelector(".quiz-feedback");
+          question.classList.remove("is-correct", "is-incorrect", "is-unanswered");
+          question.classList.add(points === maxPoints ? "is-correct" : points === 0 ? "is-incorrect" : "is-unanswered");
+          if (feedback) feedback.textContent = message;
+        }
+
+        function gradeLesson5Quiz(quiz) {
+          const result = document.querySelector("#lesson5QuizResult");
+          let score = 0;
+
+          Object.entries(mcAnswers).forEach(([questionId, answer]) => {
+            const question = quiz.querySelector(`[data-question="${questionId}"]`);
+            const selected = quiz.querySelector(`input[name="${questionId}"]:checked`);
+            if (!selected) {
+              markQuestion(question, 0, 1, `No answer selected. Correct answer: ${answer}. ${mcExplanations[questionId]}`);
+              return;
+            }
+            if (selected.value === answer) {
+              score += 1;
+              markQuestion(question, 1, 1, `Correct. ${mcExplanations[questionId]}`);
+              return;
+            }
+            markQuestion(question, 0, 1, `Not quite. Correct answer: ${answer}. ${mcExplanations[questionId]}`);
+          });
+
+          const parasitismQuestion = quiz.querySelector('[data-question="parasitism"]');
+          const parasitism = normalizeText(formValue(quiz, "parasitismDefinition"));
+          let parasitismScore = 0;
+          if (includesAny(parasitism, ["parasite", "organism"]) && includesAny(parasitism, ["host", "expense", "harm", "harmed"])) parasitismScore += 1;
+          if (includesAny(normalizeText(formValue(quiz, "animalParasite")), ["lice", "louse", "tick", "ticks", "tapeworm", "tapeworms"])) parasitismScore += 1;
+          if (includesAny(normalizeText(formValue(quiz, "plantParasite")), ["dodder", "yellow dodder"])) parasitismScore += 1;
+          score += parasitismScore;
+          markQuestion(parasitismQuestion, parasitismScore, 3, `Section B6 score: ${parasitismScore} / 3. Model answer: a parasite gains at the expense of a host, causing harm; animal examples include lice, ticks, and tapeworms; plant example is yellow dodder.`);
+
+          const enzymesQuestion = quiz.querySelector('[data-question="enzymes"]');
+          const enzymes = normalizeText(formValue(quiz, "enzymeProcess"));
+          let enzymesScore = 0;
+          if (includesAny(enzymes, ["extracellular", "external", "outside"])) enzymesScore += 1;
+          if (includesAny(enzymes, ["secrete", "secretes", "secreted", "enzyme", "enzymes"])) enzymesScore += 1;
+          if (includesAny(enzymes, ["break", "breaks", "breakdown", "simple", "simpler"]) && includesAny(enzymes, ["absorb", "absorbed", "nutrient", "nutrients"])) enzymesScore += 1;
+          score += enzymesScore;
+          markQuestion(enzymesQuestion, enzymesScore, 3, `Section B7 score: ${enzymesScore} / 3. Model answer: decomposers carry out extracellular digestion by secreting enzymes onto dead material, breaking it into simpler substances that are absorbed.`);
+
+          const foodWebQuestion = quiz.querySelector('[data-question="food-web"]');
+          const carbon = normalizeText(formValue(quiz, "carbonCycle"));
+          const absent = normalizeText(formValue(quiz, "decomposersAbsent"));
+          let foodWebScore = 0;
+          if (includesAny(carbon, ["break", "breakdown", "decompose", "organic", "dead"])) foodWebScore += 1;
+          if (includesAny(carbon, ["carbon dioxide", "co2", "respiration", "atmosphere"])) foodWebScore += 1;
+          if (includesAny(absent, ["dead", "remains", "faeces", "feces", "urine", "locked", "trapped"])) foodWebScore += 1;
+          if (includesAny(absent, ["accumulate", "build up", "not decay", "no decay"])) foodWebScore += 1;
+          if (includesAny(absent, ["nutrient", "nutrients", "recycle", "recycled", "producer", "producers"])) foodWebScore += 1;
+          score += foodWebScore;
+          markQuestion(foodWebQuestion, foodWebScore, 5, `Section B8 score: ${foodWebScore} / 5. Model answer: decomposers break down organic material and release carbon dioxide during respiration; without them, dead material and waste accumulate and nutrients are not recycled for producers.`);
+
+          const wasteQuestion = quiz.querySelector('[data-question="waste"]');
+          const bio = normalizeText(formValue(quiz, "biodegradable"));
+          const nonBio = normalizeText(formValue(quiz, "nonBiodegradable"));
+          let wasteScore = 0;
+          if (includesAny(bio, ["organic", "biological", "food", "urine", "faeces", "feces", "body waste"])) wasteScore += 1;
+          if (includesAny(bio, ["broken down", "break down", "decomposed", "decomposer", "bacteria", "fungi", "simple"])) wasteScore += 1;
+          if (includesAny(nonBio, ["manufactured", "plastic", "plastics", "synthetic"])) wasteScore += 1;
+          if (includesAny(nonBio, ["cannot", "not broken", "not break", "persist", "indefinitely", "remain"])) wasteScore += 1;
+          score += wasteScore;
+          markQuestion(wasteQuestion, wasteScore, 4, `Section B9 score: ${wasteScore} / 4. Model answer: biodegradable waste is biological material decomposers can break down; non-biodegradable waste is manufactured material such as plastic that decomposers cannot break down and persists.`);
+
+          if (result) {
+            result.textContent = `Your score: ${score} / 20`;
+            result.setAttribute("tabindex", "-1");
+            result.focus();
+          }
+        }
+
+        function resetLesson5Quiz(quiz) {
+          const result = document.querySelector("#lesson5QuizResult");
+          quiz.reset();
+          quiz.querySelectorAll(".quiz-question").forEach((question) => {
+            question.classList.remove("is-correct", "is-incorrect", "is-unanswered");
+            const feedback = question.querySelector(".quiz-feedback");
+            if (feedback) feedback.textContent = "";
+          });
+          if (result) result.textContent = "";
+        }
+
+        function scrollToHash() {
+          if (!window.location.hash) return;
+          const target = document.getElementById(window.location.hash.slice(1));
+          if (target) target.scrollIntoView({ block: "start", behavior: "auto" });
+        }
+
+        document.addEventListener("click", (event) => {
+          if (!(event.target instanceof Element)) return;
+          const flashcardToggle = event.target.closest(".flashcard-toggle");
+          if (flashcardToggle) {
+            const card = flashcardToggle.closest(".flashcard");
+            if (!card) return;
+            const isOpen = card.classList.toggle("is-open");
+            flashcardToggle.setAttribute("aria-expanded", String(isOpen));
+            return;
+          }
+          if (event.target.closest("#resetLesson5Quiz")) {
+            const quiz = document.querySelector("#lesson5Quiz");
+            if (quiz) resetLesson5Quiz(quiz);
+          }
+        });
+
+        document.addEventListener("submit", (event) => {
+          if (!(event.target instanceof HTMLFormElement) || event.target.id !== "lesson5Quiz") return;
+          event.preventDefault();
+          gradeLesson5Quiz(event.target);
+        });
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", scrollToHash);
+        } else {
+          scrollToHash();
+        }
+        window.addEventListener("load", () => window.setTimeout(scrollToHash, 100));
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=Source+Serif+4:wght@650;750&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Main navigation">
+      <a class="brand" href="../index.html" aria-label="Edutech Academy home">
+        <img src="../assets/edutech-academy-logo.png" alt="Edutech Academy logo" />
+        <span>Edutech Academy</span>
+      </a>
+      <nav class="nav-links lesson-nav" aria-label="Biology lesson navigation">
+        <a href="csec-biology.html">Biology Course</a>
+        <a href="#video">Video</a>
+        <a href="#flashcards">Flashcards</a>
+        <a href="#quiz">Quiz</a>
+      </nav>
+      <a class="nav-action" href="../index.html#subjects">All Subjects</a>
+    </header>
+
+    <main class="lesson-page">
+      <section class="lesson-hero" aria-labelledby="lesson-title">
+        <div class="lesson-hero-copy">
+          <h1 id="lesson-title">Lesson 5:<br />Decomposers<br />and Symbiosis</h1>
+          <p>
+            Study how bacteria and fungi recycle matter, then compare mutualism, commensalism, and parasitism using CSEC-ready examples.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#video">Watch Lesson</a>
+            <a class="button secondary" href="#quiz">Take Quiz</a>
+          </div>
+        </div>
+        <div class="lesson-metrics" aria-label="Lesson details">
+          <div>
+            <span>Section</span>
+            <strong>A</strong>
+          </div>
+          <div>
+            <span>Objectives</span>
+            <strong>3.6/3.7</strong>
+          </div>
+          <div>
+            <span>Quiz</span>
+            <strong>20 marks</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="lesson-layout">
+        <aside class="lesson-outline" aria-label="Lesson outline">
+          <h2>Lesson Path</h2>
+          <ol>
+            <li><a href="#video">Watch the training video</a></li>
+            <li><a href="#guide">Review the study summary</a></li>
+            <li><a href="#flashcards">Practise the flashcards</a></li>
+            <li><a href="#quiz">Complete the quiz</a></li>
+          </ol>
+        </aside>
+
+        <div class="lesson-content">
+          <section class="video-panel" id="video" aria-labelledby="video-title">
+            <div class="lesson-section-heading">
+              <h2 id="video-title">Nature's Social Network</h2>
+              <p>Watch how decomposers and species relationships keep ecosystems functioning.</p>
+            </div>
+            <video controls preload="none" poster="../assets/edutech-academy-logo.png">
+              <source src="../assets/videos/biology/lesson5/natures-social-network.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </section>
+
+          <section class="study-guide" id="guide" aria-labelledby="guide-title">
+            <div class="lesson-section-heading">
+              <h2 id="guide-title">Study Guide Summary</h2>
+              <p>Key decomposer and symbiosis ideas for CSEC Biology SO 3.6 and 3.7.</p>
+            </div>
+            <div class="guide-grid">
+              <article>
+                <h3>Decomposers</h3>
+                <p>Bacteria and fungi are saprophytic microorganisms that feed on dead and decaying organic matter.</p>
+              </article>
+              <article>
+                <h3>External Digestion</h3>
+                <p>Decomposers secrete enzymes onto dead material, break complex molecules into simpler nutrients, and absorb them.</p>
+              </article>
+              <article>
+                <h3>Carbon Recycling</h3>
+                <p>During decomposition, decomposers respire and release carbon dioxide back into the atmosphere.</p>
+              </article>
+              <article>
+                <h3>Nitrogen Recycling</h3>
+                <p>Decomposers break down proteins in remains and waste, producing ammonia and other simple nitrogen compounds.</p>
+              </article>
+              <article>
+                <h3>Symbiosis</h3>
+                <p>Symbiosis is a close relationship between different species, including mutualism, commensalism, and parasitism.</p>
+              </article>
+              <article>
+                <h3>Waste Types</h3>
+                <p>Biodegradable waste can be broken down by decomposers; non-biodegradable manufactured waste such as plastic persists.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="flashcard-section" id="flashcards" aria-labelledby="flashcards-title">
+            <div class="lesson-section-heading">
+              <h2 id="flashcards-title">Lesson Flashcards</h2>
+              <p>Practise the exact terms used in decomposer and symbiosis questions.</p>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Decomposers and Recycling</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define decomposers.</button>
+                <div class="flashcard-answer">Decomposers are saprophytic microorganisms, specifically bacteria and fungi, that obtain nutrients from dead and decaying organic matter.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">How do decomposers digest dead material?</button>
+                <div class="flashcard-answer">They secrete enzymes onto dead material for external digestion, then absorb the simpler nutrients produced.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">How do decomposers help the carbon cycle?</button>
+                <div class="flashcard-answer">They break down organic material and release carbon dioxide during respiration.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">How do decomposers help nitrogen recycling?</button>
+                <div class="flashcard-answer">They break down proteins in remains and waste, producing ammonia and simple nitrogen compounds.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Compare biodegradable and non-biodegradable waste.</button>
+                <div class="flashcard-answer">Biodegradable organic waste can be broken down by decomposers. Non-biodegradable manufactured waste cannot and persists in the environment.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Symbiosis</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define symbiosis.</button>
+                <div class="flashcard-answer">A close, long-term relationship between two or more different species that live together.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Compare mutualism, commensalism, and parasitism.</button>
+                <div class="flashcard-answer">In mutualism both species benefit; in commensalism one benefits and the other is unaffected; in parasitism one benefits while the host is harmed.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Why are epiphytes examples of commensalism?</button>
+                <div class="flashcard-answer">They grow on branches to reach light, but do not take water, mineral ions, or food from the host tree.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Why are cattle egrets examples of commensalism?</button>
+                <div class="flashcard-answer">The birds eat insects disturbed by cattle, while the cattle are unaffected.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Parasitism and Mutualism</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define parasitism and host.</button>
+                <div class="flashcard-answer">Parasitism is a form of nutrition where a parasite obtains nutrients at the expense of a host, which is harmed.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Compare external and internal parasites.</button>
+                <div class="flashcard-answer">External parasites live on the host surface, such as lice and ticks. Internal parasites live inside the host, such as tapeworms in the gut.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">How does yellow dodder harm its host?</button>
+                <div class="flashcard-answer">It penetrates the host's transport tissues and absorbs water, mineral ions, and sugars.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Explain mutualism in legume root nodules.</button>
+                <div class="flashcard-answer">The plant gives bacteria protection and sugars. The bacteria convert atmospheric nitrogen into organic nitrogen the plant can use to make proteins.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Quick-Fire Identification</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Fungi breaking down a fallen log.</button>
+                <div class="flashcard-answer">Decomposer activity or saprophytic nutrition.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">A bat drinking nectar from a banana flower.</button>
+                <div class="flashcard-answer">Mutualism: the bat gets food and the flower is pollinated.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">A tick feeding on a bird.</button>
+                <div class="flashcard-answer">Parasitism: the tick is an external parasite and the bird is harmed.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">An air plant on a mahogany branch.</button>
+                <div class="flashcard-answer">Commensalism: the epiphyte gains light and the tree is unaffected.</div>
+              </article>
+            </div>
+          </section>
+
+          <section class="quiz-section" id="quiz" aria-labelledby="quiz-title">
+            <div class="lesson-section-heading">
+              <h2 id="quiz-title">Self-Assessment Quiz</h2>
+              <p>Use precise biological language. The written sections are scored with model-answer keywords.</p>
+            </div>
+            <form id="lesson5Quiz" class="quiz-form">
+              <div class="quiz-meta">
+                <span>CSEC Biology SO 3.6 and 3.7</span>
+                <span>Total marks: 20</span>
+              </div>
+
+              <fieldset class="quiz-question" data-question="mc1">
+                <legend>1. Which describes the biological term symbiosis?</legend>
+                <label><input type="radio" name="mc1" value="A" /> A. A relationship where one organism kills and eats another.</label>
+                <label><input type="radio" name="mc1" value="B" /> B. Any close relationship between two or more species.</label>
+                <label><input type="radio" name="mc1" value="C" /> C. Bacteria converting atmospheric nitrogen into amino acids.</label>
+                <label><input type="radio" name="mc1" value="D" /> D. Physical breakdown of manufactured products.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc2">
+                <legend>2. Nitrogen-fixing bacteria live in root nodules of legume plants. Which relationship is this?</legend>
+                <label><input type="radio" name="mc2" value="A" /> A. Parasitism</label>
+                <label><input type="radio" name="mc2" value="B" /> B. Commensalism</label>
+                <label><input type="radio" name="mc2" value="C" /> C. Mutualism</label>
+                <label><input type="radio" name="mc2" value="D" /> D. Decomposition</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc3">
+                <legend>3. Egrets feed on insects disturbed as cattle move. Cattle are unaffected. This is:</legend>
+                <label><input type="radio" name="mc3" value="A" /> A. Parasitism</label>
+                <label><input type="radio" name="mc3" value="B" /> B. Commensalism</label>
+                <label><input type="radio" name="mc3" value="C" /> C. Mutualism</label>
+                <label><input type="radio" name="mc3" value="D" /> D. Predation</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc4">
+                <legend>4. Which microorganisms function as primary decomposers?</legend>
+                <label><input type="radio" name="mc4" value="A" /> A. Bacteria and fungi</label>
+                <label><input type="radio" name="mc4" value="B" /> B. Algae and protozoa</label>
+                <label><input type="radio" name="mc4" value="C" /> C. Viruses and bacteria</label>
+                <label><input type="radio" name="mc4" value="D" /> D. Fungi and algae</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc5">
+                <legend>5. When decomposers break down biodegradable waste, which substances are released?</legend>
+                <label><input type="radio" name="mc5" value="A" /> A. Oxygen, nitrates, and water vapour</label>
+                <label><input type="radio" name="mc5" value="B" /> B. Glucose, starch, and complex proteins</label>
+                <label><input type="radio" name="mc5" value="C" /> C. Methane, plastic, and toxic liquids</label>
+                <label><input type="radio" name="mc5" value="D" /> D. Carbon dioxide, ammonia, and other simple compounds</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="parasitism">
+                <legend>6. Parasitism mechanics</legend>
+                <label class="short-answer">Define parasitism.
+                  <textarea name="parasitismDefinition"></textarea>
+                </label>
+                <label class="short-answer">Animal parasite example
+                  <input type="text" name="animalParasite" autocomplete="off" />
+                </label>
+                <label class="short-answer">Plant parasite example
+                  <input type="text" name="plantParasite" autocomplete="off" />
+                </label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="enzymes">
+                <legend>7. The role of enzymes</legend>
+                <label class="short-answer">Explain how bacteria and fungi digest dead organic matter.
+                  <textarea name="enzymeProcess"></textarea>
+                </label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="food-web">
+                <legend>8. Importance in food webs</legend>
+                <label class="short-answer">How do decomposers contribute to the carbon cycle?
+                  <textarea name="carbonCycle"></textarea>
+                </label>
+                <label class="short-answer">What would happen if decomposers were absent from the food web?
+                  <textarea name="decomposersAbsent"></textarea>
+                </label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="waste">
+                <legend>9. Biodegradability</legend>
+                <label class="short-answer">Describe biodegradable waste.
+                  <textarea name="biodegradable"></textarea>
+                </label>
+                <label class="short-answer">Describe non-biodegradable waste.
+                  <textarea name="nonBiodegradable"></textarea>
+                </label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <div class="quiz-actions">
+                <button class="button primary" type="submit">Submit Quiz</button>
+                <button class="button secondary" id="resetLesson5Quiz" type="button">Reset</button>
+              </div>
+              <p id="lesson5QuizResult" class="quiz-result" aria-live="polite"></p>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

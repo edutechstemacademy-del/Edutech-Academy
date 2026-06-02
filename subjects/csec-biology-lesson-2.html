@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CSEC Biology Lesson 2 from Edutech Academy: Ecological Sampling Techniques with video, flashcards, and a self-assessment quiz."
+    />
+    <title>Lesson 2: Ecological Sampling Techniques | Edutech Academy</title>
+    <script>
+      (() => {
+        const answers = { mc1: "C", mc2: "B", mc3: "C", mc4: "A", mc5: "C" };
+        const explanations = {
+          mc1: "A habitat is a place where organisms live.",
+          mc2: "A quadrat encloses a known area for sampling organisms.",
+          mc3: "A pooter uses suction to collect small invertebrates.",
+          mc4: "Pitfall traps collect ground-dwelling insects, including nocturnal insects.",
+          mc5: "Belt transects use quadrats along a line, so they provide abundance data.",
+        };
+        const validAssumptions = ["non-toxic", "not-visible", "does-not-rub-off"];
+
+        function normalizeText(value) {
+          return value.trim().toLowerCase().replace(/\s+/g, " ");
+        }
+
+        function formValue(form, name) {
+          const field = form.elements.namedItem(name);
+          return field ? field.value : "";
+        }
+
+        function markQuestion(question, points, maxPoints, message) {
+          if (!question) return;
+          const feedback = question.querySelector(".quiz-feedback");
+          question.classList.remove("is-correct", "is-incorrect", "is-unanswered");
+          question.classList.add(points === maxPoints ? "is-correct" : points === 0 ? "is-incorrect" : "is-unanswered");
+          if (feedback) feedback.textContent = message;
+        }
+
+        function gradeLesson2Quiz(quiz) {
+          const result = document.querySelector("#lesson2QuizResult");
+          let score = 0;
+
+          Object.entries(answers).forEach(([questionId, answer]) => {
+            const question = quiz.querySelector(`[data-question="${questionId}"]`);
+            const selected = quiz.querySelector(`input[name="${questionId}"]:checked`);
+
+            if (!selected) {
+              markQuestion(question, 0, 1, `No answer selected. Correct answer: ${answer}. ${explanations[questionId]}`);
+              return;
+            }
+
+            if (selected.value === answer) {
+              score += 1;
+              markQuestion(question, 1, 1, `Correct. ${explanations[questionId]}`);
+              return;
+            }
+
+            markQuestion(question, 0, 1, `Not quite. Correct answer: ${answer}. ${explanations[questionId]}`);
+          });
+
+          const densityQuestion = quiz.querySelector('[data-question="density"]');
+          const definition = normalizeText(formValue(quiz, "densityDefinition"));
+          const densityTotal = Number(formValue(quiz, "densityTotal"));
+          const densityMean = Number(formValue(quiz, "densityMean"));
+          const definitionOk =
+            definition.includes("number") &&
+            definition.includes("organisms") &&
+            (definition.includes("1 m2") || definition.includes("1m2") || definition.includes("1 m") || definition.includes("area"));
+          let densityScore = 0;
+          if (definitionOk) densityScore += 1;
+          if (densityTotal === 50) densityScore += 2;
+          if (densityMean === 10) densityScore += 2;
+          score += densityScore;
+          markQuestion(
+            densityQuestion,
+            densityScore,
+            5,
+            `Section II score: ${densityScore} / 5. Model answers: species density is the number of organisms of each species within 1 m2; total = 50; mean = 10 per 1 m2.`
+          );
+
+          const recaptureQuestion = quiz.querySelector('[data-question="recapture"]');
+          const estimate = Number(formValue(quiz, "populationEstimate"));
+          const assumptions = Array.from(quiz.querySelectorAll('input[name="assumptions"]:checked')).map((input) => input.value);
+          const selectedValidAssumptions = assumptions.filter((value) => validAssumptions.includes(value));
+          const invalidAssumptions = assumptions.filter((value) => !validAssumptions.includes(value));
+          let recaptureScore = 0;
+          if (estimate === 75) recaptureScore += 3;
+          recaptureScore += Math.min(selectedValidAssumptions.length, 2);
+          if (invalidAssumptions.length > 0) recaptureScore = Math.max(0, recaptureScore - invalidAssumptions.length);
+          score += recaptureScore;
+          markQuestion(
+            recaptureQuestion,
+            recaptureScore,
+            5,
+            `Section III score: ${recaptureScore} / 5. Model answer: (33 x 16) / 7 = about 75 beetles. Valid assumptions include non-toxic marks, marks not increasing predation, and marks not rubbing off.`
+          );
+
+          const apparatusQuestion = quiz.querySelector('[data-question="apparatus"]');
+          let apparatusScore = 0;
+          if (formValue(quiz, "pondTool") === "pond-net") apparatusScore += 1;
+          if (formValue(quiz, "treeTool") === "beating-tray") apparatusScore += 1;
+          if (formValue(quiz, "groundTool") === "pitfall-trap") apparatusScore += 1;
+          score += apparatusScore;
+          markQuestion(apparatusQuestion, apparatusScore, 3, `Section IV score: ${apparatusScore} / 3. Correct tools: pond net, beating tray, pitfall trap.`);
+
+          if (result) {
+            result.textContent = `Your score: ${score} / 18`;
+            result.setAttribute("tabindex", "-1");
+            result.focus();
+          }
+        }
+
+        function resetLesson2Quiz(quiz) {
+          const result = document.querySelector("#lesson2QuizResult");
+          quiz.reset();
+          quiz.querySelectorAll(".quiz-question").forEach((question) => {
+            question.classList.remove("is-correct", "is-incorrect", "is-unanswered");
+            const feedback = question.querySelector(".quiz-feedback");
+            if (feedback) feedback.textContent = "";
+          });
+          if (result) result.textContent = "";
+        }
+
+        function scrollToHash() {
+          if (!window.location.hash) return;
+          const target = document.getElementById(window.location.hash.slice(1));
+          if (target) target.scrollIntoView({ block: "start", behavior: "auto" });
+        }
+
+        document.addEventListener("click", (event) => {
+          if (!(event.target instanceof Element)) return;
+
+          const flashcardToggle = event.target.closest(".flashcard-toggle");
+          if (flashcardToggle) {
+            const card = flashcardToggle.closest(".flashcard");
+            const isOpen = card.classList.toggle("is-open");
+            flashcardToggle.setAttribute("aria-expanded", String(isOpen));
+            return;
+          }
+
+          if (event.target.closest("#resetLesson2Quiz")) {
+            const quiz = document.querySelector("#lesson2Quiz");
+            if (quiz) resetLesson2Quiz(quiz);
+          }
+        });
+
+        document.addEventListener("submit", (event) => {
+          if (!(event.target instanceof HTMLFormElement) || event.target.id !== "lesson2Quiz") return;
+          event.preventDefault();
+          gradeLesson2Quiz(event.target);
+        });
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", scrollToHash);
+        } else {
+          scrollToHash();
+        }
+        window.addEventListener("load", () => window.setTimeout(scrollToHash, 100));
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=Source+Serif+4:wght@650;750&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Main navigation">
+      <a class="brand" href="../index.html" aria-label="Edutech Academy home">
+        <img src="../assets/edutech-academy-logo.png" alt="Edutech Academy logo" />
+        <span>Edutech Academy</span>
+      </a>
+      <nav class="nav-links lesson-nav" aria-label="Biology lesson navigation">
+        <a href="csec-biology.html">Biology Course</a>
+        <a href="#video">Video</a>
+        <a href="#flashcards">Flashcards</a>
+        <a href="#quiz">Quiz</a>
+      </nav>
+      <a class="nav-action" href="../index.html#subjects">All Subjects</a>
+    </header>
+
+    <main class="lesson-page">
+      <section class="lesson-hero" aria-labelledby="lesson-title">
+        <div class="lesson-hero-copy">
+          <h1 id="lesson-title">Lesson 2:<br />Ecological<br />Sampling<br />Techniques</h1>
+          <p>
+            Learn how ecologists sample habitats using quadrats, transects, collection apparatus, and mark-release-recapture population estimates.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#video">Watch Lesson</a>
+            <a class="button secondary" href="#quiz">Take Quiz</a>
+          </div>
+        </div>
+        <div class="lesson-metrics" aria-label="Lesson details">
+          <div>
+            <span>Section</span>
+            <strong>A</strong>
+          </div>
+          <div>
+            <span>Objective</span>
+            <strong>2.1</strong>
+          </div>
+          <div>
+            <span>Quiz</span>
+            <strong>18 marks</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="lesson-layout">
+        <aside class="lesson-outline" aria-label="Lesson outline">
+          <h2>Lesson Path</h2>
+          <ol>
+            <li><a href="#video">Watch the training video</a></li>
+            <li><a href="#guide">Review the study summary</a></li>
+            <li><a href="#flashcards">Practise the flashcards</a></li>
+            <li><a href="#quiz">Complete the quiz</a></li>
+          </ol>
+        </aside>
+
+        <div class="lesson-content">
+          <section class="video-panel" id="video" aria-labelledby="video-title">
+            <div class="lesson-section-heading">
+              <h2 id="video-title">Ecologist's Toolkit</h2>
+              <p>Watch first, then use the summary and flashcards before attempting the full quiz.</p>
+            </div>
+            <video controls preload="none" poster="../assets/edutech-academy-logo.png">
+              <source src="../assets/videos/biology/lesson2/ecologists-toolkit.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </section>
+
+          <section class="study-guide" id="guide" aria-labelledby="guide-title">
+            <div class="lesson-section-heading">
+              <h2 id="guide-title">Study Guide Summary</h2>
+              <p>Key ideas for CSEC Biology sampling technique questions.</p>
+            </div>
+            <div class="guide-grid">
+              <article>
+                <h3>Habitat</h3>
+                <p>A habitat is the place where organisms live. It provides the resources needed for survival.</p>
+              </article>
+              <article>
+                <h3>Species Lists</h3>
+                <p>A species list tells which organisms are present, but not their numbers or exact distribution within the habitat.</p>
+              </article>
+              <article>
+                <h3>Quadrats</h3>
+                <p>Quadrats enclose a known area, commonly 0.25 m2 or 1 m2, so species density can be estimated.</p>
+              </article>
+              <article>
+                <h3>Transects</h3>
+                <p>Transects are used when organisms change gradually across a habitat, such as vegetation from the sea inland.</p>
+              </article>
+              <article>
+                <h3>Sampling Tools</h3>
+                <p>Know when to use pooters, sweep nets, pond nets, beating trays, and pitfall traps.</p>
+              </article>
+              <article>
+                <h3>Population Estimates</h3>
+                <p>Mark-release-recapture estimates mobile animal populations using capture, marking, release, and recapture data.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="flashcard-section" id="flashcards" aria-labelledby="flashcards-title">
+            <div class="lesson-section-heading">
+              <h2 id="flashcards-title">Lesson Flashcards</h2>
+              <p>Use each card as a quick oral test before the quiz.</p>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Definitions and Ethics</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define habitat.</button>
+                <div class="flashcard-answer">A habitat is a place where organisms live and where they obtain the resources needed to survive.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">What is the limitation of a species list?</button>
+                <div class="flashcard-answer">It shows which organisms are present, but not where they live within the habitat or how many there are.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">What fieldwork rule protects habitats?</button>
+                <div class="flashcard-answer">Cause minimum disruption. If you move stones or objects, return them exactly as you found them.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Quadrats and Density</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">What is a quadrat?</button>
+                <div class="flashcard-answer">A quadrat is a wire or wooden frame that encloses a known area for sampling organisms.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define species density.</button>
+                <div class="flashcard-answer">Species density is the number of organisms of each species within 1 m2.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">How do you estimate mean density using quadrats?</button>
+                <div class="flashcard-answer">Place quadrats randomly, count individuals in each sample, add the counts, then divide by the number of quadrats.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Transects</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">When is a transect useful?</button>
+                <div class="flashcard-answer">Use a transect when species are not randomly distributed and change across a habitat gradient.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">What is a line transect?</button>
+                <div class="flashcard-answer">A tape is laid across a habitat and the organisms found at intervals along the line are recorded.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">What is a belt transect?</button>
+                <div class="flashcard-answer">Quadrats are placed at intervals along a line, giving abundance or density data at each point.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Mark-Release-Recapture</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">State the population estimate formula.</button>
+                <div class="flashcard-answer">Estimated population = (number captured and marked x number recaptured) / number recaptured that were marked.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">What marking conditions must be met?</button>
+                <div class="flashcard-answer">Marks must be non-toxic, must not make animals more visible to predators, and should not rub off before recapture.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Calculate: 36 marked, 45 recaptured, 6 marked in recapture.</button>
+                <div class="flashcard-answer">Estimated population = (36 x 45) / 6 = 1620 / 6 = 270 crabs.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Sampling Apparatus</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Which tools match ponds, trees, and ground-dwelling insects?</button>
+                <div class="flashcard-answer">Use a pond net for ponds, a beating tray for tree branches, and a pitfall trap for ground-dwelling insects.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">What does a pooter collect?</button>
+                <div class="flashcard-answer">A pooter draws tiny or small animals into a container by suction through a tube.</div>
+              </article>
+            </div>
+          </section>
+
+          <section class="quiz-section" id="quiz" aria-labelledby="quiz-title">
+            <div class="lesson-section-heading">
+              <h2 id="quiz-title">Self-Assessment Quiz</h2>
+              <p>Answer all sections. Numeric answers can be typed as whole numbers.</p>
+            </div>
+            <form id="lesson2Quiz" class="quiz-form">
+              <div class="quiz-meta">
+                <span>CSEC Biology SO 2.1</span>
+                <span>Total marks: 18</span>
+              </div>
+
+              <fieldset class="quiz-question" data-question="mc1">
+                <legend>1. Which is the most accurate definition of habitat?</legend>
+                <label><input type="radio" name="mc1" value="A" /> A. A group of organisms of the same species.</label>
+                <label><input type="radio" name="mc1" value="B" /> B. The role a species fulfills within an ecosystem.</label>
+                <label><input type="radio" name="mc1" value="C" /> C. A place where organisms live.</label>
+                <label><input type="radio" name="mc1" value="D" /> D. All living and non-living factors in an area.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc2">
+                <legend>2. What is the primary purpose of using a quadrat?</legend>
+                <label><input type="radio" name="mc2" value="A" /> A. To catch fast-moving flying insects.</label>
+                <label><input type="radio" name="mc2" value="B" /> B. To enclose a known area for sampling vegetation or slow-moving animals.</label>
+                <label><input type="radio" name="mc2" value="C" /> C. To record distribution along a line.</label>
+                <label><input type="radio" name="mc2" value="D" /> D. To trap nocturnal ground-dwelling invertebrates.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc3">
+                <legend>3. Which tool uses suction to draw small invertebrates into a container?</legend>
+                <label><input type="radio" name="mc3" value="A" /> A. Sweep net</label>
+                <label><input type="radio" name="mc3" value="B" /> B. Pitfall trap</label>
+                <label><input type="radio" name="mc3" value="C" /> C. Pooter</label>
+                <label><input type="radio" name="mc3" value="D" /> D. Beating tray</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc4">
+                <legend>4. Which apparatus is best for nocturnal ground-dwelling insects?</legend>
+                <label><input type="radio" name="mc4" value="A" /> A. Pitfall trap</label>
+                <label><input type="radio" name="mc4" value="B" /> B. Sweep net</label>
+                <label><input type="radio" name="mc4" value="C" /> C. Pond net</label>
+                <label><input type="radio" name="mc4" value="D" /> D. Beating tray</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc5">
+                <legend>5. What is the main difference between a line transect and a belt transect?</legend>
+                <label><input type="radio" name="mc5" value="A" /> A. A line transect uses nets, while a belt transect uses traps.</label>
+                <label><input type="radio" name="mc5" value="B" /> B. A line transect measures animals, while a belt transect only measures plants.</label>
+                <label><input type="radio" name="mc5" value="C" /> C. A line transect records vegetation at intervals; a belt transect uses quadrats at intervals to determine abundance.</label>
+                <label><input type="radio" name="mc5" value="D" /> D. A line transect is used in ponds, while a belt transect is used only in forests.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="density">
+                <legend>Section II: Species density calculations</legend>
+                <div class="data-table" role="table" aria-label="Quadrat sampling results">
+                  <div role="row"><span role="columnheader">Q1</span><span role="cell">12</span></div>
+                  <div role="row"><span role="columnheader">Q2</span><span role="cell">8</span></div>
+                  <div role="row"><span role="columnheader">Q3</span><span role="cell">15</span></div>
+                  <div role="row"><span role="columnheader">Q4</span><span role="cell">10</span></div>
+                  <div role="row"><span role="columnheader">Q5</span><span role="cell">5</span></div>
+                </div>
+                <label class="short-answer">Define species density.
+                  <input type="text" name="densityDefinition" autocomplete="off" />
+                </label>
+                <label class="short-answer">Total number of individuals sampled.
+                  <input type="number" name="densityTotal" inputmode="numeric" />
+                </label>
+                <label class="short-answer">Mean species density per 1 m2.
+                  <input type="number" name="densityMean" inputmode="numeric" />
+                </label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="recapture">
+                <legend>Section III: Mark-release-recapture</legend>
+                <p class="question-note">33 beetles were marked. Two days later, 16 beetles were recaptured and 7 were marked.</p>
+                <label class="short-answer">Estimated population of beetles.
+                  <input type="number" name="populationEstimate" inputmode="numeric" />
+                </label>
+                <p class="question-note">Select two valid assumptions.</p>
+                <label><input type="checkbox" name="assumptions" value="non-toxic" /> The marking substance is non-toxic.</label>
+                <label><input type="checkbox" name="assumptions" value="not-visible" /> The marks do not make animals more visible to predators.</label>
+                <label><input type="checkbox" name="assumptions" value="does-not-rub-off" /> The mark does not rub off before recapture.</label>
+                <label><input type="checkbox" name="assumptions" value="more-predators" /> More predators enter the habitat after release.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="apparatus">
+                <legend>Section IV: Choose the correct sampling apparatus</legend>
+                <label class="short-answer">A small pond
+                  <select name="pondTool">
+                    <option value="">Choose tool</option>
+                    <option value="pond-net">Pond net</option>
+                    <option value="sweep-net">Sweep net</option>
+                    <option value="pitfall-trap">Pitfall trap</option>
+                    <option value="beating-tray">Beating tray</option>
+                  </select>
+                </label>
+                <label class="short-answer">The branches of a tree
+                  <select name="treeTool">
+                    <option value="">Choose tool</option>
+                    <option value="pond-net">Pond net</option>
+                    <option value="sweep-net">Sweep net</option>
+                    <option value="pitfall-trap">Pitfall trap</option>
+                    <option value="beating-tray">Beating tray</option>
+                  </select>
+                </label>
+                <label class="short-answer">Ground-dwelling insects
+                  <select name="groundTool">
+                    <option value="">Choose tool</option>
+                    <option value="pond-net">Pond net</option>
+                    <option value="sweep-net">Sweep net</option>
+                    <option value="pitfall-trap">Pitfall trap</option>
+                    <option value="beating-tray">Beating tray</option>
+                  </select>
+                </label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <div class="quiz-actions">
+                <button class="button primary" type="submit">Submit Quiz</button>
+                <button class="button secondary" id="resetLesson2Quiz" type="button">Reset</button>
+              </div>
+              <p id="lesson2QuizResult" class="quiz-result" aria-live="polite"></p>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+
+  </body>
+</html>

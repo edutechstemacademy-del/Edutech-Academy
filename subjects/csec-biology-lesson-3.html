@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CSEC Biology Lesson 3 from Edutech Academy: Ecological Definitions and Abiotic Factors with video, flashcards, and a 35-mark self-assessment quiz."
+    />
+    <title>Lesson 3: Ecological Definitions and Abiotic Factors | Edutech Academy</title>
+    <script>
+      (() => {
+        const mcAnswers = { mc1: "D", mc2: "B", mc3: "C", mc4: "B", mc5: "C" };
+        const mcExplanations = {
+          mc1: "Bacteria are living organisms, so their numbers are a biotic factor.",
+          mc2: "Both organisms benefit, so the interaction is mutualism.",
+          mc3: "A niche is the role a species fulfils in an ecosystem, including feeding level and relationships.",
+          mc4: "A population is all the members of a single species living in a habitat.",
+          mc5: "Abiotic factors are the non-living features that influence the community.",
+        };
+        const matchingAnswers = {
+          matchEnvironment: "E",
+          matchEcology: "F",
+          matchHabitat: "G",
+          matchSpecies: "B",
+          matchPopulation: "C",
+          matchCommunity: "I",
+          matchEcosystem: "A",
+          matchNiche: "J",
+          matchAbiotic: "H",
+          matchBiotic: "D",
+        };
+        const validPlantFactors = [
+          "temperature",
+          "rainfall",
+          "water",
+          "light-intensity",
+          "light-duration",
+          "soil-ph",
+          "soil-water-content",
+          "mineral-ion-content",
+        ];
+
+        function normalizeText(value) {
+          return value.trim().toLowerCase().replace(/\s+/g, " ");
+        }
+
+        function formValue(form, name) {
+          const field = form.elements.namedItem(name);
+          return field ? field.value : "";
+        }
+
+        function includesAny(text, terms) {
+          return terms.some((term) => text.includes(term));
+        }
+
+        function markQuestion(question, points, maxPoints, message) {
+          if (!question) return;
+          const feedback = question.querySelector(".quiz-feedback");
+          question.classList.remove("is-correct", "is-incorrect", "is-unanswered");
+          question.classList.add(points === maxPoints ? "is-correct" : points === 0 ? "is-incorrect" : "is-unanswered");
+          if (feedback) feedback.textContent = message;
+        }
+
+        function gradeLesson3Quiz(quiz) {
+          const result = document.querySelector("#lesson3QuizResult");
+          let score = 0;
+
+          Object.entries(mcAnswers).forEach(([questionId, answer]) => {
+            const question = quiz.querySelector(`[data-question="${questionId}"]`);
+            const selected = quiz.querySelector(`input[name="${questionId}"]:checked`);
+
+            if (!selected) {
+              markQuestion(question, 0, 1, `No answer selected. Correct answer: ${answer}. ${mcExplanations[questionId]}`);
+              return;
+            }
+
+            if (selected.value === answer) {
+              score += 1;
+              markQuestion(question, 1, 1, `Correct. ${mcExplanations[questionId]}`);
+              return;
+            }
+
+            markQuestion(question, 0, 1, `Not quite. Correct answer: ${answer}. ${mcExplanations[questionId]}`);
+          });
+
+          const matchingQuestion = quiz.querySelector('[data-question="matching"]');
+          let matchingScore = 0;
+          Object.entries(matchingAnswers).forEach(([fieldName, answer]) => {
+            if (formValue(quiz, fieldName) === answer) matchingScore += 1;
+          });
+          score += matchingScore;
+          markQuestion(
+            matchingQuestion,
+            matchingScore,
+            10,
+            `Section II score: ${matchingScore} / 10. Correct order: Environment-E, Ecology-F, Habitat-G, Species-B, Population-C, Community-I, Ecosystem-A, Niche-J, Abiotic-H, Biotic-D.`
+          );
+
+          const shortQuestion = quiz.querySelector('[data-question="short-answer"]');
+          const selectedFactors = Array.from(quiz.querySelectorAll('input[name="plantFactors"]:checked')).map((input) => input.value);
+          const validFactorCount = selectedFactors.filter((value) => validPlantFactors.includes(value)).length;
+          const invalidFactorCount = selectedFactors.length - validFactorCount;
+          let factorScore = Math.min(validFactorCount, 4);
+          if (invalidFactorCount > 0) factorScore = Math.max(0, factorScore - invalidFactorCount);
+
+          const tulgrenUse = normalizeText(formValue(quiz, "tulgrenUse"));
+          let tulgrenUseScore = 0;
+          if (includesAny(tulgrenUse, ["light", "heat", "lamp", "bulb"]) && includesAny(tulgrenUse, ["dry", "dries", "drying"])) tulgrenUseScore += 1;
+          if (includesAny(tulgrenUse, ["down", "downward", "fall", "collect", "vessel", "jar"])) tulgrenUseScore += 1;
+
+          const tulgrenWhy = normalizeText(formValue(quiz, "tulgrenWhy"));
+          let tulgrenWhyScore = 0;
+          if (includesAny(tulgrenWhy, ["damp", "moist", "dark"])) tulgrenWhyScore += 1;
+          if (includesAny(tulgrenWhy, ["away", "avoid", "heat", "light", "dry", "fall", "sieve"])) tulgrenWhyScore += 1;
+
+          const waterHolding = normalizeText(formValue(quiz, "waterHolding"));
+          let waterHoldingScore = 0;
+          if (includesAny(waterHolding, ["hold", "retain", "remain", "drain", "drainage", "capacity"]) && waterHolding.includes("water")) waterHoldingScore += 1;
+          if (includesAny(waterHolding, ["available", "availability", "survival", "dry", "plant", "organism", "root"])) waterHoldingScore += 1;
+
+          const shortScore = factorScore + tulgrenUseScore + tulgrenWhyScore + waterHoldingScore;
+          score += shortScore;
+          markQuestion(
+            shortQuestion,
+            shortScore,
+            10,
+            `Section III score: ${shortScore} / 10. Model points: any four plant abiotic factors; heat and light dry the soil and drive organisms downward; soil animals prefer damp, dark conditions; water holding capacity affects water availability during dry periods.`
+          );
+
+          const calculationQuestion = quiz.querySelector('[data-question="calculation"]');
+          let calculationScore = 0;
+          if (Number(formValue(quiz, "expectedVolume")) === 400) calculationScore += 2;
+          if (Number(formValue(quiz, "newVolume")) === 350) calculationScore += 2;
+          if (Number(formValue(quiz, "airVolume")) === 50) calculationScore += 3;
+          if (Number(formValue(quiz, "airPercentage")) === 25) calculationScore += 3;
+          score += calculationScore;
+          markQuestion(
+            calculationQuestion,
+            calculationScore,
+            10,
+            `Section IV score: ${calculationScore} / 10. Working: expected volume = 400 cm3, measured volume = 350 cm3, air volume = 50 cm3, percentage air = 25%.`
+          );
+
+          if (result) {
+            result.textContent = `Your score: ${score} / 35`;
+            result.setAttribute("tabindex", "-1");
+            result.focus();
+          }
+        }
+
+        function resetLesson3Quiz(quiz) {
+          const result = document.querySelector("#lesson3QuizResult");
+          quiz.reset();
+          quiz.querySelectorAll(".quiz-question").forEach((question) => {
+            question.classList.remove("is-correct", "is-incorrect", "is-unanswered");
+            const feedback = question.querySelector(".quiz-feedback");
+            if (feedback) feedback.textContent = "";
+          });
+          if (result) result.textContent = "";
+        }
+
+        function scrollToHash() {
+          if (!window.location.hash) return;
+          const target = document.getElementById(window.location.hash.slice(1));
+          if (target) target.scrollIntoView({ block: "start", behavior: "auto" });
+        }
+
+        document.addEventListener("click", (event) => {
+          if (!(event.target instanceof Element)) return;
+
+          const flashcardToggle = event.target.closest(".flashcard-toggle");
+          if (flashcardToggle) {
+            const card = flashcardToggle.closest(".flashcard");
+            if (!card) return;
+            const isOpen = card.classList.toggle("is-open");
+            flashcardToggle.setAttribute("aria-expanded", String(isOpen));
+            return;
+          }
+
+          if (event.target.closest("#resetLesson3Quiz")) {
+            const quiz = document.querySelector("#lesson3Quiz");
+            if (quiz) resetLesson3Quiz(quiz);
+          }
+        });
+
+        document.addEventListener("submit", (event) => {
+          if (!(event.target instanceof HTMLFormElement) || event.target.id !== "lesson3Quiz") return;
+          event.preventDefault();
+          gradeLesson3Quiz(event.target);
+        });
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", scrollToHash);
+        } else {
+          scrollToHash();
+        }
+        window.addEventListener("load", () => window.setTimeout(scrollToHash, 100));
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=Source+Serif+4:wght@650;750&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="Main navigation">
+      <a class="brand" href="../index.html" aria-label="Edutech Academy home">
+        <img src="../assets/edutech-academy-logo.png" alt="Edutech Academy logo" />
+        <span>Edutech Academy</span>
+      </a>
+      <nav class="nav-links lesson-nav" aria-label="Biology lesson navigation">
+        <a href="csec-biology.html">Biology Course</a>
+        <a href="#video">Video</a>
+        <a href="#flashcards">Flashcards</a>
+        <a href="#quiz">Quiz</a>
+      </nav>
+      <a class="nav-action" href="../index.html#subjects">All Subjects</a>
+    </header>
+
+    <main class="lesson-page">
+      <section class="lesson-hero" aria-labelledby="lesson-title">
+        <div class="lesson-hero-copy">
+          <h1 id="lesson-title">Lesson 3:<br />Ecological<br />Definitions<br />and Factors</h1>
+          <p>
+            Master the core language of ecology, separate abiotic from biotic factors, and practise soil-analysis calculations for CSEC Biology.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#video">Watch Lesson</a>
+            <a class="button secondary" href="#quiz">Take Quiz</a>
+          </div>
+        </div>
+        <div class="lesson-metrics" aria-label="Lesson details">
+          <div>
+            <span>Section</span>
+            <strong>A</strong>
+          </div>
+          <div>
+            <span>Objectives</span>
+            <strong>2.2/2.3</strong>
+          </div>
+          <div>
+            <span>Quiz</span>
+            <strong>35 marks</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="lesson-layout">
+        <aside class="lesson-outline" aria-label="Lesson outline">
+          <h2>Lesson Path</h2>
+          <ol>
+            <li><a href="#video">Watch the training video</a></li>
+            <li><a href="#guide">Review the study summary</a></li>
+            <li><a href="#flashcards">Practise the flashcards</a></li>
+            <li><a href="#quiz">Complete the quiz</a></li>
+          </ol>
+        </aside>
+
+        <div class="lesson-content">
+          <section class="video-panel" id="video" aria-labelledby="video-title">
+            <div class="lesson-section-heading">
+              <h2 id="video-title">Ecology: Actors and Architects</h2>
+              <p>Use the video to connect the key ecological terms with the abiotic conditions that shape where organisms live.</p>
+            </div>
+            <video controls preload="none" poster="../assets/edutech-academy-logo.png">
+              <source src="../assets/videos/biology/lesson3/ecology-actors-architects.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </section>
+
+          <section class="study-guide" id="guide" aria-labelledby="guide-title">
+            <div class="lesson-section-heading">
+              <h2 id="guide-title">Study Guide Summary</h2>
+              <p>Key ideas for CSEC Biology questions on ecological definitions and environmental factors.</p>
+            </div>
+            <div class="guide-grid">
+              <article>
+                <h3>Ecological Scale</h3>
+                <p>Species, population, community, ecosystem, habitat, and niche describe different levels of organisation in ecology.</p>
+              </article>
+              <article>
+                <h3>Species</h3>
+                <p>A species is a group of organisms that can breed together to produce fertile offspring.</p>
+              </article>
+              <article>
+                <h3>Niche</h3>
+                <p>A niche is the role a species fulfils, including its trophic level and relationships with other species.</p>
+              </article>
+              <article>
+                <h3>Abiotic Factors</h3>
+                <p>Abiotic factors are non-living features such as light intensity, temperature, rainfall, soil pH, salinity, and mineral ions.</p>
+              </article>
+              <article>
+                <h3>Biotic Factors</h3>
+                <p>Biotic factors are influences organisms have on each other, including food, disease, predation, and competition.</p>
+              </article>
+              <article>
+                <h3>Soil Properties</h3>
+                <p>Soil water content, water holding capacity, air content, oxygen, carbon dioxide, and pH affect survival in soil habitats.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="flashcard-section" id="flashcards" aria-labelledby="flashcards-title">
+            <div class="lesson-section-heading">
+              <h2 id="flashcards-title">Lesson Flashcards</h2>
+              <p>Tap each card to check the answer before attempting the quiz.</p>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Core Ecological Terms</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define species.</button>
+                <div class="flashcard-answer">A group of organisms that can breed together to produce fertile offspring.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define population.</button>
+                <div class="flashcard-answer">Individuals of the same species living within a habitat.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define ecology.</button>
+                <div class="flashcard-answer">The scientific study of organisms and their surroundings or environment.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define community.</button>
+                <div class="flashcard-answer">All the different organisms that live together in a particular place.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define ecosystem.</button>
+                <div class="flashcard-answer">A biological community together with all the abiotic factors that influence those organisms.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define niche.</button>
+                <div class="flashcard-answer">The role fulfilled by a species in an ecosystem, including feeding level and relationships with other species.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Define habitat.</button>
+                <div class="flashcard-answer">The specific place where an organism lives and obtains the resources it needs to survive.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Abiotic and Biotic Factors</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">What are abiotic factors?</button>
+                <div class="flashcard-answer">All the non-living features of an ecosystem that influence the organisms in the community.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Give examples of abiotic factors.</button>
+                <div class="flashcard-answer">Latitude, altitude, climate, temperature, water, oxygen, carbon dioxide, light, rainfall, soil depth, soil pH, soil water content, and mineral ion content.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">What are biotic factors?</button>
+                <div class="flashcard-answer">All the influences that organisms in a community have on each other.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Give examples of biotic factors.</button>
+                <div class="flashcard-answer">Food, disease, predation, and competition for food, water, and living space.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Specific Abiotic Effects</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">How does soil pH affect organisms?</button>
+                <div class="flashcard-answer">Soil pH influences which plants and animals can survive in a soil habitat.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">How does light affect distribution?</button>
+                <div class="flashcard-answer">Light provides energy for photosynthesis and affects the distribution and behaviour of photosynthetic organisms.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">How does temperature affect organisms?</button>
+                <div class="flashcard-answer">Temperature affects the rate of internal chemical reactions, so maximum and minimum temperatures influence survival and distribution.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">How do water and salinity affect aquatic organisms?</button>
+                <div class="flashcard-answer">Salinity is salt content. Changes in water pH or salinity can affect organisms such as clams and corals that form calcium carbonate shells or skeletons.</div>
+              </article>
+            </div>
+
+            <div class="flashcard-group">
+              <h3>Soil Characteristics</h3>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Compare water content and water holding capacity.</button>
+                <div class="flashcard-answer">Water content is the actual amount of water in a soil sample. Water holding capacity is the volume of water that remains after water drains through soil.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Why is oxygen important in soil?</button>
+                <div class="flashcard-answer">Oxygen is needed for respiration by plant roots and soil-dwelling organisms.</div>
+              </article>
+              <article class="flashcard">
+                <button class="flashcard-toggle" type="button">Why is carbon dioxide found in soil important?</button>
+                <div class="flashcard-answer">Carbon dioxide is needed for photosynthesis by microscopic plants and algae in the upper, lighted soil layers.</div>
+              </article>
+            </div>
+          </section>
+
+          <section class="quiz-section" id="quiz" aria-labelledby="quiz-title">
+            <div class="lesson-section-heading">
+              <h2 id="quiz-title">Self-Assessment Quiz</h2>
+              <p>Complete all sections. Use the feedback to revise your definitions and calculation method.</p>
+            </div>
+            <form id="lesson3Quiz" class="quiz-form">
+              <div class="quiz-meta">
+                <span>CSEC Biology SO 2.2 and 2.3</span>
+                <span>Total marks: 35</span>
+              </div>
+
+              <fieldset class="quiz-question" data-question="mc1">
+                <legend>1. Which of the following is NOT an abiotic factor?</legend>
+                <label><input type="radio" name="mc1" value="A" /> A. Oxygen concentration of river water</label>
+                <label><input type="radio" name="mc1" value="B" /> B. Mineral content of the soil</label>
+                <label><input type="radio" name="mc1" value="C" /> C. Salinity of the soil in a wetland ecosystem</label>
+                <label><input type="radio" name="mc1" value="D" /> D. The numbers of bacteria in a soil sample</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc2">
+                <legend>2. Nitrogen-fixing bacteria in root nodules receive protection and energy while the plant receives nitrogen. This is an example of:</legend>
+                <label><input type="radio" name="mc2" value="A" /> A. Commensalism</label>
+                <label><input type="radio" name="mc2" value="B" /> B. Mutualism</label>
+                <label><input type="radio" name="mc2" value="C" /> C. Parasitism</label>
+                <label><input type="radio" name="mc2" value="D" /> D. Decomposition</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc3">
+                <legend>3. In an ecosystem, a niche is correctly defined as:</legend>
+                <label><input type="radio" name="mc3" value="A" /> A. The physical place where an organism lives.</label>
+                <label><input type="radio" name="mc3" value="B" /> B. All the individuals of a particular species in a habitat.</label>
+                <label><input type="radio" name="mc3" value="C" /> C. The role fulfilled by a species in an ecosystem, including its trophic level.</label>
+                <label><input type="radio" name="mc3" value="D" /> D. The study of organisms and their surroundings.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc4">
+                <legend>4. Which of the following represents a population?</legend>
+                <label><input type="radio" name="mc4" value="A" /> A. All the different species living in a particular place.</label>
+                <label><input type="radio" name="mc4" value="B" /> B. All the members of a single species living within a habitat.</label>
+                <label><input type="radio" name="mc4" value="C" /> C. A group of organisms that can breed together to produce fertile offspring.</label>
+                <label><input type="radio" name="mc4" value="D" /> D. The community and all the factors that influence the organisms.</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="mc5">
+                <legend>5. Which term refers to all the non-living features of an ecosystem that influence the community?</legend>
+                <label><input type="radio" name="mc5" value="A" /> A. Biotic factors</label>
+                <label><input type="radio" name="mc5" value="B" /> B. Environment</label>
+                <label><input type="radio" name="mc5" value="C" /> C. Abiotic factors</label>
+                <label><input type="radio" name="mc5" value="D" /> D. Habitat</label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="matching">
+                <legend>Section II: Match each term with its correct definition.</legend>
+                <p class="question-note">
+                  Definitions: A ecosystem system, B fertile breeding group, C one species in a habitat, D organism influences, E surroundings,
+                  F study of organisms and surroundings, G place organisms live, H non-living features, I organisms in a place, J role in an ecosystem.
+                </p>
+                <div class="matching-grid">
+                  <label class="short-answer">1. Environment
+                    <select name="matchEnvironment">
+                      <option value="">Choose</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">2. Ecology
+                    <select name="matchEcology">
+                      <option value="">Choose</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">3. Habitat
+                    <select name="matchHabitat">
+                      <option value="">Choose</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">4. Species
+                    <select name="matchSpecies">
+                      <option value="">Choose</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">5. Population
+                    <select name="matchPopulation">
+                      <option value="">Choose</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">6. Community
+                    <select name="matchCommunity">
+                      <option value="">Choose</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">7. Ecosystem
+                    <select name="matchEcosystem">
+                      <option value="">Choose</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">8. Niche
+                    <select name="matchNiche">
+                      <option value="">Choose</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">9. Abiotic Factor
+                    <select name="matchAbiotic">
+                      <option value="">Choose</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option>
+                    </select>
+                  </label>
+                  <label class="short-answer">10. Biotic Factor
+                    <select name="matchBiotic">
+                      <option value="">Choose</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option>
+                    </select>
+                  </label>
+                </div>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="short-answer">
+                <legend>Section III: Abiotic factors and organism establishment</legend>
+                <p class="question-note">Select four abiotic factors that influence plant growth in terrestrial habitats.</p>
+                <label><input type="checkbox" name="plantFactors" value="temperature" /> Temperature</label>
+                <label><input type="checkbox" name="plantFactors" value="rainfall" /> Rainfall</label>
+                <label><input type="checkbox" name="plantFactors" value="water" /> Water</label>
+                <label><input type="checkbox" name="plantFactors" value="light-intensity" /> Light intensity</label>
+                <label><input type="checkbox" name="plantFactors" value="light-duration" /> Light duration</label>
+                <label><input type="checkbox" name="plantFactors" value="soil-ph" /> Soil pH</label>
+                <label><input type="checkbox" name="plantFactors" value="soil-water-content" /> Soil water content</label>
+                <label><input type="checkbox" name="plantFactors" value="mineral-ion-content" /> Mineral ion content</label>
+                <label><input type="checkbox" name="plantFactors" value="disease" /> Disease</label>
+                <label><input type="checkbox" name="plantFactors" value="predation" /> Predation</label>
+                <label class="short-answer">How is the light bulb used in a Tulgren funnel?
+                  <textarea name="tulgrenUse"></textarea>
+                </label>
+                <label class="short-answer">Why do soil animals move away from the bulb and fall through the sieve?
+                  <textarea name="tulgrenWhy"></textarea>
+                </label>
+                <label class="short-answer">Why is water holding capacity important for soil organisms?
+                  <textarea name="waterHolding"></textarea>
+                </label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <fieldset class="quiz-question" data-question="calculation">
+                <legend>Section IV: Soil air-content calculation</legend>
+                <p class="question-note">
+                  A 200 cm3 tin can is filled with soil. The soil is added to 200 cm3 of water. After stirring, the new total volume is 350 cm3.
+                  Calculate the percentage by volume of air in the soil sample.
+                </p>
+                <div class="data-table four-column" role="table" aria-label="Soil air content data">
+                  <div role="row"><span role="columnheader">Soil volume</span><span role="cell">200 cm3</span></div>
+                  <div role="row"><span role="columnheader">Water volume</span><span role="cell">200 cm3</span></div>
+                  <div role="row"><span role="columnheader">Measured total</span><span role="cell">350 cm3</span></div>
+                  <div role="row"><span role="columnheader">Soil sample</span><span role="cell">200 cm3</span></div>
+                </div>
+                <label class="short-answer">Expected volume: water volume + soil volume
+                  <input type="number" name="expectedVolume" inputmode="numeric" />
+                </label>
+                <label class="short-answer">New volume measured
+                  <input type="number" name="newVolume" inputmode="numeric" />
+                </label>
+                <label class="short-answer">Volume of air: expected volume - new volume
+                  <input type="number" name="airVolume" inputmode="numeric" />
+                </label>
+                <label class="short-answer">Percentage of air: air volume / soil sample volume x 100
+                  <input type="number" name="airPercentage" inputmode="numeric" />
+                </label>
+                <p class="quiz-feedback" aria-live="polite"></p>
+              </fieldset>
+
+              <div class="quiz-actions">
+                <button class="button primary" type="submit">Submit Quiz</button>
+                <button class="button secondary" id="resetLesson3Quiz" type="button">Reset</button>
+              </div>
+              <p id="lesson3QuizResult" class="quiz-result" aria-live="polite"></p>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
