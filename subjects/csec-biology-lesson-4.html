@@ -8,6 +8,7 @@
       content="CSEC Biology Lesson 4 from Edutech Academy: Feeding Relationships with video, flashcards, and a 25-mark self-assessment quiz."
     />
     <title>Lesson 4: Feeding Relationships | Edutech Academy</title>
+    <script src="../scripts/youtube-embeds.js"></script>
     <script>
       (() => {
         const mcAnswers = { mc1: "B", mc2: "A", mc3: "A", mc4: "B", mc5: "C", mc6: "B", mc7: "B", mc8: "B", mc9: "D", mc10: "C" };
@@ -245,10 +246,16 @@
               <h2 id="video-title">The Energy Journey</h2>
               <p>Watch how energy moves from producers to consumers and why food chains rarely extend beyond four or five trophic levels.</p>
             </div>
-            <video controls preload="none" poster="../assets/edutech-academy-logo.png">
-              <source src="../assets/videos/biology/lesson4/the-energy-journey.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            <div class="video-frame">
+              <iframe
+                data-youtube-id="nGDKHLzg5H8"
+                src="https://www.youtube.com/embed/nGDKHLzg5H8?rel=0&playsinline=1"
+                title="CSEC Biology Lesson 4 video"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
           </section>
 
           <section class="study-guide" id="guide" aria-labelledby="guide-title">
@@ -556,5 +563,16 @@
         </div>
       </section>
     </main>
+    <footer class="site-footer">
+      <div class="footer-links">
+        <span>Edutech Academy</span>
+        <a href="about-danual-bridgemohan.html">About</a>
+        <a href="mailto:info@edutechacademy.com">info@edutechacademy.com</a>
+      </div>
+      <div class="powered-by">
+        <span>Powered by BridgeTech Systems</span>
+        <img src="../assets/bridgetech-systems-logo.jpg" alt="BridgeTech Systems logo" />
+      </div>
+    </footer>
   </body>
 </html>

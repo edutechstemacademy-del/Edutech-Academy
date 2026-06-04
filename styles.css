@@ -442,15 +442,44 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 24px;
+  flex-wrap: wrap;
   padding: 28px clamp(18px, 6vw, 88px);
   border-top: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.92);
   color: var(--muted);
   font-weight: 800;
 }
 
 .site-footer span {
   color: var(--navy);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.powered-by {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.powered-by span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.powered-by img {
+  width: min(230px, 48vw);
+  height: auto;
+  max-height: 58px;
+  object-fit: contain;
 }
 
 .subject-page {
@@ -613,6 +642,122 @@ a {
   opacity: 0.72;
 }
 
+.about-page {
+  background:
+    linear-gradient(135deg, rgba(120, 168, 171, 0.12), rgba(244, 185, 66, 0.08) 42%, rgba(255, 255, 255, 0.96)),
+    var(--white);
+}
+
+.about-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+  gap: clamp(28px, 6vw, 78px);
+  align-items: center;
+  padding: clamp(54px, 8vw, 110px) clamp(18px, 6vw, 88px);
+}
+
+.about-hero h1,
+.about-section h2 {
+  margin: 0;
+  color: var(--navy-deep);
+  font-family: "Source Serif 4", Georgia, serif;
+  font-weight: 750;
+  letter-spacing: 0;
+}
+
+.about-hero h1 {
+  max-width: 820px;
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 0.9;
+}
+
+.about-hero p,
+.about-section p,
+.about-list li {
+  color: var(--muted);
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.about-hero p {
+  max-width: 760px;
+  margin: 24px 0 0;
+  font-size: clamp(1.08rem, 2vw, 1.3rem);
+}
+
+.about-photo-card {
+  padding: 18px;
+  border: 1px solid rgba(16, 36, 52, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow);
+}
+
+.about-photo {
+  aspect-ratio: 1;
+  width: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.about-content {
+  display: grid;
+  gap: 24px;
+  padding: 0 clamp(18px, 6vw, 88px) clamp(62px, 8vw, 112px);
+}
+
+.about-section {
+  padding: clamp(22px, 4vw, 34px);
+  border: 1px solid rgba(16, 36, 52, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 48px rgba(0, 59, 95, 0.08);
+}
+
+.about-section h2 {
+  font-size: clamp(1.9rem, 4vw, 3.2rem);
+  line-height: 1;
+}
+
+.about-section p {
+  margin: 16px 0 0;
+}
+
+.about-list,
+.about-grid {
+  margin-top: 18px;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.about-grid article {
+  padding: 18px;
+  border: 1px solid rgba(16, 36, 52, 0.12);
+  border-radius: 8px;
+  background: var(--soft);
+}
+
+.about-grid h3 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 1rem;
+}
+
+.about-grid p {
+  margin-top: 10px;
+}
+
+.about-list {
+  display: grid;
+  gap: 10px;
+  padding-left: 20px;
+}
+
 .lesson-page {
   min-height: 100vh;
 }
@@ -727,12 +872,26 @@ a {
   margin: 0;
 }
 
-.video-panel video {
+.video-panel video,
+.video-frame iframe {
   width: 100%;
-  max-height: 620px;
   border-radius: 8px;
   background: var(--navy-deep);
   box-shadow: 0 22px 54px rgba(0, 59, 95, 0.16);
+}
+
+.video-panel video {
+  max-height: 620px;
+}
+
+.video-frame {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+
+.video-frame iframe {
+  height: 100%;
+  border: 0;
 }
 
 .guide-grid {
@@ -1032,6 +1191,7 @@ a {
   }
 
   .course-hero,
+  .about-hero,
   .lesson-hero,
   .lesson-layout {
     grid-template-columns: 1fr;
@@ -1141,6 +1301,7 @@ a {
   }
 
   .course-hero h1,
+  .about-hero h1,
   .lesson-hero h1 {
     font-size: clamp(2.05rem, 9.6vw, 2.75rem);
     line-height: 0.96;
@@ -1148,6 +1309,7 @@ a {
   }
 
   .course-hero > div,
+  .about-hero > div,
   .lesson-hero-copy {
     width: min(100%, calc(100vw - 58px));
     max-width: calc(100vw - 58px);
@@ -1155,12 +1317,14 @@ a {
   }
 
   .course-hero p,
+  .about-hero p,
   .lesson-hero p {
     max-width: 318px;
     overflow-wrap: anywhere;
   }
 
   .course-status,
+  .about-section,
   .lesson-metrics div,
   .video-panel,
   .study-guide,
@@ -1175,7 +1339,16 @@ a {
   }
 
   .matching-grid,
+  .about-grid,
   .data-table {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .about-grid,
+  .matching-grid,
+  .data-table {
+    grid-template-columns: 1fr;
   }
 }

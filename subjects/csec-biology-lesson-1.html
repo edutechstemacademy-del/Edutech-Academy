@@ -8,6 +8,7 @@
       content="CSEC Biology Lesson 1 from Edutech Academy: Biodiversity and Classification with video, flashcards, and a self-assessment quiz."
     />
     <title>Lesson 1: Biodiversity and Classification | Edutech Academy</title>
+    <script src="../scripts/youtube-embeds.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -76,10 +77,16 @@
               <h2 id="video-title">Classifying Life on Earth</h2>
               <p>Use the video first, then move into the summary, flashcards, and quiz.</p>
             </div>
-            <video controls preload="none" poster="../assets/edutech-academy-logo.png">
-              <source src="../assets/videos/biology/lesson1/lesson1-classifying-life-on-earth.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            <div class="video-frame">
+              <iframe
+                data-youtube-id="R84iCNtQUOo"
+                src="https://www.youtube.com/embed/R84iCNtQUOo?rel=0&playsinline=1"
+                title="CSEC Biology Lesson 1 video"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
           </section>
 
           <section class="study-guide" id="guide" aria-labelledby="guide-title">
@@ -365,5 +372,16 @@
     </main>
 
     <script defer src="../scripts/biology-lesson-1.js"></script>
+    <footer class="site-footer">
+      <div class="footer-links">
+        <span>Edutech Academy</span>
+        <a href="about-danual-bridgemohan.html">About</a>
+        <a href="mailto:info@edutechacademy.com">info@edutechacademy.com</a>
+      </div>
+      <div class="powered-by">
+        <span>Powered by BridgeTech Systems</span>
+        <img src="../assets/bridgetech-systems-logo.jpg" alt="BridgeTech Systems logo" />
+      </div>
+    </footer>
   </body>
 </html>
