@@ -1,104 +1,1430 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Form 1 IT Exam Study Guide</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="app-shell">
-      <aside class="side-rail" aria-label="Study zones">
-        <div class="brand-block">
-          <div class="brand-mark" aria-hidden="true">IT</div>
-          <div>
-            <h1>Form 1 IT</h1>
-            <p>Term 3 revision</p>
-          </div>
-        </div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <nav class="module-nav" id="moduleNav" aria-label="Exam topics"></nav>
+    <!-- Primary Meta Tags -->
+    <title>Future Innovators STEM & Robotics Camp 2026 | EduTech Academy</title>
+    <meta name="title" content="Future Innovators STEM & Robotics Camp 2026 | EduTech Academy" />
+    <meta name="description" content="Build, code, and create at Trinidad & Tobago's premier STEM camp. Limited dynamic spots available. Register now!" />
 
-        <section class="progress-card" aria-labelledby="overallProgressTitle">
-          <div class="progress-head">
-            <h2 id="overallProgressTitle">Readiness</h2>
-            <strong id="overallPercent">0%</strong>
-          </div>
-          <div class="meter" aria-hidden="true">
-            <span id="overallMeter"></span>
-          </div>
-          <dl class="mini-stats">
-            <div>
-              <dt>Correct</dt>
-              <dd id="correctCount">0</dd>
-            </div>
-            <div>
-              <dt>Review</dt>
-              <dd id="reviewCount">0</dd>
-            </div>
-            <div>
-              <dt>Confidence</dt>
-              <dd id="confidenceLabel">Set it</dd>
-            </div>
-          </dl>
-          <button class="ghost-button" id="resetProgress" type="button">
-            <span class="button-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4 7h10a6 6 0 1 1-5.3 8.8" /><path d="M4 7l4-4M4 7l4 4" /></svg>
-            </span>
-            Reset progress
-          </button>
-        </section>
-      </aside>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://edutech-tt.com/camp" />
+    <meta property="og:title" content="Future Innovators STEM & Robotics Camp 2026" />
+    <meta property="og:description" content="Build, code, and create at Trinidad & Tobago's premier STEM camp. Secure your dynamic spot!" />
+    <meta property="og:image" content="assets/edutech.png" />
 
-      <main class="study-stage">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://edutech-tt.com/camp" />
+    <meta property="twitter:title" content="Future Innovators STEM & Robotics Camp 2026" />
+    <meta property="twitter:description" content="Build, code, and create at Trinidad & Tobago's premier STEM camp. Secure your dynamic spot!" />
+    <meta property="twitter:image" content="assets/edutech.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="assets/edutech.png" type="image/png" />
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;600;700;900&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ── reset & base ── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #0b0d12;
+            --surface: #141820;
+            --surface-light: #1e2430;
+            --accent: #00f0ff;
+            --accent-dim: rgba(0, 240, 255, 0.10);
+            --accent-glow: rgba(0, 240, 255, 0.25);
+            --text: #edf2f7;
+            --text-muted: #94a3b8;
+            --text-dim: #475569;
+            --border-subtle: rgba(148, 163, 184, 0.08);
+            --border-accent: rgba(0, 240, 255, 0.25);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ── subtle noise texture ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            background-size: 256px 256px;
+            background-repeat: repeat;
+        }
+
+        /* ── grid overlay ── */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image:
+                linear-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.08) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        /* ── page wrapper ── */
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 1020px;
+            margin: 0 auto;
+            padding: 32px 24px 72px;
+        }
+
+        /* ── top bar ── */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0 28px;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 500;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .top-bar .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Azeret Mono', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text);
+            letter-spacing: 0.06em;
+            text-decoration: none;
+        }
+        .top-bar .brand img {
+            height: 28px;
+            width: auto;
+            display: block;
+        }
+        .top-bar .brand span {
+            color: var(--accent);
+        }
+        .top-bar .actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .top-bar .actions .share-btn-top {
+            background: none;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .top-bar .actions .share-btn-top:hover {
+            border-color: var(--text-muted);
+            color: var(--text);
+        }
+        .top-bar .meta {
+            opacity: 0.6;
+            font-size: 10px;
+        }
+
+        /* ── hero ── */
+        .hero {
+            padding: 56px 0 48px;
+            position: relative;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 0.9fr;
+            gap: 48px;
+            align-items: end;
+        }
+
+        .hero-main {
+            position: relative;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Azeret Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-dim);
+            padding: 6px 16px;
+            border-radius: 2px;
+            margin-bottom: 28px;
+            border-left: 3px solid var(--accent);
+        }
+        .hero-eyebrow i {
+            font-size: 12px;
+            color: var(--accent);
+        }
+
+        .hero h1 {
+            font-family: 'Azeret Mono', monospace;
+            font-weight: 900;
+            font-size: clamp(34px, 7vw, 64px);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+        .hero h1 .line-1 {
+            display: block;
+            color: var(--text);
+        }
+        .hero h1 .line-2 {
+            display: block;
+            color: var(--accent);
+        }
+        .hero h1 .line-3 {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.7em;
+            letter-spacing: 0.04em;
+        }
+
+        .hero-lead {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 420px;
+            margin-top: 16px;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        .hero-lead strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* hero aside (info block) */
+        .hero-aside {
+            background: var(--surface);
+            border: 1px solid var(--border-subtle);
+            padding: 32px 28px;
+            border-radius: 4px;
+            position: relative;
+            align-self: center;
+        }
+        .hero-aside::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 40px;
+            right: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.6;
+        }
+
+        .hero-aside .label {
+            font-family: 'Azeret Mono', monospace;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .hero-aside .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 24px;
+        }
+        .hero-aside .stat-item .stat-value {
+            font-family: 'Azeret Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -0.02em;
+        }
+        .hero-aside .stat-item .stat-value .small {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .hero-aside .stat-item .stat-label {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 2px;
+            letter-spacing: 0.04em;
+        }
+        .hero-aside .stat-item .stat-value .spot-counter {
+            color: #ff6b6b;
+            font-weight: 900;
+        }
+
+        .hero-aside .stat-divider {
+            grid-column: 1 / -1;
+            height: 1px;
+            background: var(--border-subtle);
+            margin: 4px 0;
+        }
+
+        .hero-aside .cta-inline {
+            margin-top: 24px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Azeret Mono', monospace;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+            position: relative;
+            text-decoration: none;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: #4df4ff;
+            box-shadow: 0 8px 32px var(--accent-glow);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Azeret Mono', monospace;
+            font-weight: 600;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            padding: 13px 24px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+            text-decoration: none;
+        }
+        .btn-secondary:hover {
+            border-color: var(--text-muted);
+            color: var(--text);
+        }
+
+        .btn-arrow {
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .btn-primary:hover .btn-arrow {
+            transform: translateX(4px);
+        }
+
+        /* ── section titles ── */
+        .section-title {
+            font-family: 'Azeret Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-subtle);
+        }
+        .section-title .title-num {
+            color: var(--text-dim);
+            font-weight: 400;
+            margin-right: 4px;
+        }
+
+        .section-head {
+            font-family: 'Azeret Mono', monospace;
+            font-size: clamp(22px, 3.5vw, 36px);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+        .section-head .accent {
+            color: var(--accent);
+        }
+
+        /* ── about ── */
+        .about-block {
+            padding: 48px 0 32px;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 16px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px 56px;
+            margin-top: 8px;
+        }
+
+        .about-text p {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+        .about-text p:last-child {
+            margin-bottom: 0;
+        }
+        .about-text p strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .about-features {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .about-features .feat {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 12px 16px;
+            background: var(--surface);
+            border-radius: 3px;
+            border-left: 3px solid var(--accent);
+        }
+        .about-features .feat .feat-icon {
+            font-size: 18px;
+            color: var(--accent);
+            width: 24px;
+            text-align: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .about-features .feat .feat-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .about-features .feat .feat-text strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* ── what you'll learn ── */
+        .learn-block {
+            padding: 48px 0 32px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .learn-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+        .learn-item {
+            background: var(--surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 3px;
+            padding: 20px 20px 18px;
+            transition: border-color 0.25s, transform 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+        .learn-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .learn-item:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-3px);
+        }
+        .learn-item:hover::after {
+            opacity: 1;
+        }
+
+        .learn-item .li-num {
+            font-family: 'Azeret Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-dim);
+            letter-spacing: 0.1em;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .learn-item .li-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.3;
+        }
+        .learn-item .li-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+
+        /* ── who can apply ── */
+        .who-block {
+            padding: 40px 0 32px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .who-card {
+            background: var(--surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 36px 40px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            position: relative;
+            margin-top: 8px;
+        }
+        .who-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 60px;
+            right: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.3;
+        }
+
+        .who-card .who-icon {
+            font-size: 48px;
+            color: var(--accent);
+            width: 60px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .who-card .who-body h3 {
+            font-family: 'Azeret Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.01em;
+            margin-bottom: 6px;
+        }
+        .who-card .who-body p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 520px;
+        }
+        .who-card .who-body .badge {
+            display: inline-block;
+            margin-top: 12px;
+            font-family: 'Azeret Mono', monospace;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-dim);
+            padding: 4px 14px;
+            border-radius: 2px;
+            border-left: 2px solid var(--accent);
+        }
+
+        /* ── CTA section ── */
+        .cta-block {
+            padding: 48px 0 16px;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 8px;
+        }
+
+        .cta-block .cta-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+            background: var(--surface);
+            padding: 32px 40px;
+            border-radius: 4px;
+            border: 1px solid var(--border-subtle);
+            position: relative;
+        }
+        .cta-block .cta-inner::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 30%;
+            right: 30%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.4;
+        }
+
+        .cta-block .cta-text h2 {
+            font-family: 'Azeret Mono', monospace;
+            font-size: clamp(18px, 2.5vw, 28px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        .cta-block .cta-text h2 .highlight {
+            color: var(--accent);
+        }
+        .cta-block .cta-text p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .cta-block .cta-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* ── form panel (inline) ── */
+        .form-panel {
+            display: none;
+            margin-top: 32px;
+            padding: 32px 32px 24px;
+            background: var(--surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+        }
+        .form-panel.visible {
+            display: block;
+            animation: fadeSlide 0.4s ease;
+        }
+
+        .form-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .form-panel-title {
+            font-family: 'Azeret Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .form-panel-title i {
+            font-size: 14px;
+        }
+        .close-form-btn {
+            background: none;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+            padding: 4px 16px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+            letter-spacing: 0.04em;
+        }
+        .close-form-btn:hover {
+            border-color: var(--text-muted);
+            color: var(--text);
+        }
+
+        .form-panel iframe {
+            width: 100%;
+            border: 1px solid var(--border-subtle);
+            border-radius: 3px;
+            background: #faf8f5;
+            min-height: 1600px;
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── footer ── */
+        .footer {
+            margin-top: 56px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .footer .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Azeret Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-dim);
+            letter-spacing: 0.06em;
+        }
+        .footer .footer-brand img {
+            height: 28px;
+            width: auto;
+            display: block;
+        }
+        .footer .footer-brand span {
+            color: var(--accent);
+        }
+        .footer .footer-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: 0.08em;
+        }
+        .footer .footer-meta img {
+            height: 20px;
+            width: auto;
+            display: block;
+            opacity: 0.8;
+        }
+
+        /* ── modal ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(11, 13, 18, 0.92);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--surface);
+            border: 1px solid var(--border-accent);
+            border-radius: 4px;
+            padding: 44px 40px 36px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            transform: translateY(20px) scale(0.98);
+            transition: transform 0.35s ease;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+        }
+        .modal-overlay.open .modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal .modal-icon {
+            font-size: 44px;
+            color: var(--accent);
+            margin-bottom: 12px;
+            display: block;
+        }
+        .modal h2 {
+            font-family: 'Azeret Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        .modal p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .modal-choices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .choice-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 24px 16px 20px;
+            border-radius: 3px;
+            border: 1px solid var(--border-subtle);
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: border-color 0.25s, background 0.25s, transform 0.2s;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            text-align: center;
+        }
+        .choice-btn:hover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+            transform: translateY(-2px);
+        }
+        .choice-btn .choice-icon {
+            font-size: 28px;
+            color: var(--accent);
+        }
+        .choice-btn .choice-label {
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            font-family: 'Azeret Mono', monospace;
+        }
+        .choice-btn .choice-desc {
+            font-size: 11px;
+            color: var(--text-dim);
+            line-height: 1.4;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            transition: color 0.2s;
+        }
+        .modal-close:hover {
+            color: var(--text-muted);
+        }
+
+        /* ── share grid ── */
+        .share-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .share-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 16px 8px;
+            border-radius: 3px;
+            border: 1px solid var(--border-subtle);
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: border-color 0.25s, background 0.25s, transform 0.2s;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .share-btn:hover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+            transform: translateY(-2px);
+            color: var(--text);
+        }
+        .share-btn i {
+            font-size: 24px;
+            color: var(--accent);
+        }
+
+        /* ── responsive ── */
+        @media (max-width: 860px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .hero-aside {
+                padding: 24px 20px;
+            }
+            .hero-aside .stat-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .learn-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .who-card {
+                padding: 28px 24px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            .who-card::before {
+                left: 30px;
+                right: 30px;
+            }
+
+            .cta-block .cta-inner {
+                flex-direction: column;
+                text-align: center;
+                padding: 28px 24px;
+            }
+            .cta-block .cta-actions {
+                justify-content: center;
+            }
+
+            .modal-choices {
+                grid-template-columns: 1fr;
+            }
+            .modal {
+                padding: 32px 24px 28px;
+            }
+            .share-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .page {
+                padding: 20px 16px 48px;
+            }
+            .top-bar {
+                font-size: 9px;
+                padding-bottom: 20px;
+            }
+            .top-bar .brand {
+                font-size: 11px;
+            }
+            .top-bar .brand img {
+                height: 22px;
+            }
+
+            .hero {
+                padding: 28px 0 32px;
+            }
+            .hero h1 {
+                font-size: clamp(28px, 10vw, 40px);
+            }
+            .hero-lead {
+                font-size: 14px;
+            }
+
+            .learn-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-aside .stat-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .hero-aside .stat-item .stat-value {
+                font-size: 17px;
+            }
+
+            .about-features .feat {
+                padding: 10px 14px;
+            }
+
+            .form-panel {
+                padding: 20px 16px 16px;
+            }
+            .form-panel iframe {
+                min-height: 1200px;
+            }
+
+            .footer {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            .share-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ── print / reduced motion ── */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            html {
+                scroll-behavior: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── page ── -->
+    <div class="page">
+
+        <!-- top bar -->
         <header class="top-bar">
-          <div>
-            <p class="source-line">Waterloo Secondary School final exam study guide</p>
-            <h2 id="moduleTitle">Exam Snapshot</h2>
-          </div>
-          <div class="exam-clock" aria-label="Exam duration">
-            <span>Exam time</span>
-            <strong>1h 30m</strong>
-          </div>
+            <a href="#" class="brand">
+                <img src="assets/edutech.png" alt="EduTech STEM Academy" />
+                EduTech <span>STEM</span> Academy
+            </a>
+            <div class="actions">
+                <button class="share-btn-top" onclick="openShareModal()">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+                <span class="meta">Trinidad &amp; Tobago · 2026</span>
+            </div>
         </header>
 
-        <div class="mode-tabs" role="tablist" aria-label="Study mode">
-          <button class="tab-button is-active" data-tab="learn" role="tab" aria-selected="true" type="button">Learn</button>
-          <button class="tab-button" data-tab="walkthrough" role="tab" aria-selected="false" type="button">Walkthrough</button>
-          <button class="tab-button" data-tab="quiz" role="tab" aria-selected="false" type="button">Quiz</button>
-          <button class="tab-button" data-tab="short" role="tab" aria-selected="false" type="button">Short Answer</button>
-        </div>
+        <!-- hero -->
+        <section class="hero">
+            <div class="hero-grid">
+                <div class="hero-main">
+                    <div class="hero-eyebrow">
+                        <i class="fas fa-bolt"></i> Now Enrolling · Limited Spots
+                    </div>
+                    <h1>
+                        <span class="line-1">Future</span>
+                        <span class="line-2">Innovators</span>
+                        <span class="line-3">STEM &amp; Robotics Camp</span>
+                    </h1>
+                    <p class="hero-lead">
+                        <strong>Build. Code. Create.</strong> A hands-on experience where
+                        students engineer real solutions, write code, and discover the
+                        future of technology.
+                    </p>
+                </div>
 
-        <section class="content-grid">
-          <article class="lesson-panel" id="lessonPanel" tabindex="-1"></article>
-
-          <aside class="coach-panel" aria-labelledby="coachTitle">
-            <div class="coach-head">
-              <div>
-                <p class="panel-label">Self assessment</p>
-                <h2 id="coachTitle">Quiz coach</h2>
-              </div>
-              <button class="icon-button" id="markReview" type="button" aria-label="Mark topic for review">
-                <svg viewBox="0 0 24 24"><path d="M6 4h12v16l-6-3-6 3z" /></svg>
-              </button>
+                <div class="hero-aside">
+                    <span class="label">Camp at a glance</span>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">Mid Jul <span class="small">'26</span></div>
+                            <div class="stat-label">Dates to be confirmed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">Pri–Sec</div>
+                            <div class="stat-label">All students welcome</div>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <div class="stat-value"><span class="spot-counter" id="spot-counter">213</span> <span class="small">spots</span></div>
+                            <div class="stat-label">Dynamic availability</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">BridgeTech</div>
+                            <div class="stat-label">Powered by</div>
+                        </div>
+                    </div>
+                    <div class="cta-inline">
+                        <button class="btn-primary" onclick="openModal()">
+                            Register now
+                            <span class="btn-arrow"><i class="fas fa-arrow-right"></i></span>
+                        </button>
+                        <a href="#learn" class="btn-secondary">Learn more <i class="fas fa-arrow-down" style="font-size:10px; margin-left:4px;"></i></a>
+                    </div>
+                </div>
             </div>
-
-            <div class="quiz-card" id="sideQuiz"></div>
-
-            <section class="confidence-box" aria-labelledby="confidenceTitle">
-              <h3 id="confidenceTitle">How ready do you feel?</h3>
-              <div class="confidence-options" id="confidenceOptions"></div>
-            </section>
-
-            <section class="target-box" aria-labelledby="targetTitle">
-              <h3 id="targetTitle">Revision targets</h3>
-              <ul id="targetList"></ul>
-            </section>
-          </aside>
         </section>
-      </main>
+
+        <!-- about -->
+        <section class="about-block" id="about">
+            <div class="section-title"><span class="title-num">01</span> About the Camp</div>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>
+                        The <strong>Future Innovators STEM &amp; Robotics Camp</strong>
+                        is an immersive, project-driven program that transforms curious
+                        students into confident creators. Over the course of the camp,
+                        participants work with <strong>real robotics hardware</strong>,
+                        write executable code, and tackle open-ended engineering challenges.
+                    </p>
+                    <p>
+                        Guided by experienced mentors, students learn to think like
+                        engineers — iterating, debugging, and collaborating to bring
+                        their ideas to life. No prior experience is required; only
+                        a willingness to experiment and learn.
+                    </p>
+                </div>
+                <div class="about-features">
+                    <div class="feat">
+                        <span class="feat-icon"><i class="fas fa-cog"></i></span>
+                        <span class="feat-text"><strong>Hands-on hardware</strong> — build and program physical robots from the ground up.</span>
+                    </div>
+                    <div class="feat">
+                        <span class="feat-icon"><i class="fas fa-brain"></i></span>
+                        <span class="feat-text"><strong>Real-world problem solving</strong> — tackle challenges that mirror today's engineering.</span>
+                    </div>
+                    <div class="feat">
+                        <span class="feat-icon"><i class="fas fa-handshake"></i></span>
+                        <span class="feat-text"><strong>Team-based collaboration</strong> — work in crews to design, test, and present solutions.</span>
+                    </div>
+                    <div class="feat">
+                        <span class="feat-icon"><i class="fas fa-rocket"></i></span>
+                        <span class="feat-text"><strong>STEM career exploration</strong> — meet professionals and discover future pathways.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- what you'll learn -->
+        <section class="learn-block" id="learn">
+            <div class="section-title"><span class="title-num">02</span> What You'll Experience</div>
+            <div class="learn-grid">
+                <div class="learn-item">
+                    <span class="li-num">01</span>
+                    <div class="li-title">Build &amp; program real robots</div>
+                    <div class="li-desc">Hands-on with sensors, motors, and microcontrollers</div>
+                </div>
+                <div class="learn-item">
+                    <span class="li-num">02</span>
+                    <div class="li-title">Coding &amp; logic fundamentals</div>
+                    <div class="li-desc">Write code that makes things move, sense, and decide</div>
+                </div>
+                <div class="learn-item">
+                    <span class="li-num">03</span>
+                    <div class="li-title">Engineering design challenges</div>
+                    <div class="li-desc">Iterate, test, and refine under real constraints</div>
+                </div>
+                <div class="learn-item">
+                    <span class="li-num">04</span>
+                    <div class="li-title">Teamwork &amp; problem solving</div>
+                    <div class="li-desc">Collaborate to overcome obstacles and share knowledge</div>
+                </div>
+                <div class="learn-item">
+                    <span class="li-num">05</span>
+                    <div class="li-title">STEM career exploration</div>
+                    <div class="li-desc">Connect with professionals and see where STEM can lead</div>
+                </div>
+                <div class="learn-item">
+                    <span class="li-num">06</span>
+                    <div class="li-title">Creative tech projects</div>
+                    <div class="li-desc">Design something original — from concept to prototype</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- who can apply -->
+        <section class="who-block">
+            <div class="section-title"><span class="title-num">03</span> Who Can Apply</div>
+            <div class="who-card">
+                <span class="who-icon"><i class="fas fa-graduation-cap"></i></span>
+                <div class="who-body">
+                    <h3>Open to all students</h3>
+                    <p>
+                        Any primary or secondary school student is welcome to apply.
+                        No prior experience in robotics or coding is required —
+                        just curiosity and a willingness to learn.
+                    </p>
+                    <span class="badge"><i class="fas fa-exclamation-triangle" style="margin-right:6px;"></i> Limited spaces — register now</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-block" id="cta-section">
+            <div class="cta-inner">
+                <div class="cta-text">
+                    <h2>Ready to <span class="highlight">build</span> the future?</h2>
+                    <p>Secure your spot before spaces fill up</p>
+                </div>
+                <div class="cta-actions">
+                    <button class="btn-primary" onclick="openModal()">
+                        Register now
+                        <span class="btn-arrow"><i class="fas fa-arrow-right"></i></span>
+                    </button>
+                    <button class="btn-secondary" onclick="openShareModal()">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- inline form panel -->
+        <div class="form-panel" id="form-panel">
+            <div class="form-panel-header">
+                <span class="form-panel-title"><i class="fas fa-clipboard-list"></i> Registration Form</span>
+                <button class="close-form-btn" onclick="closeForm()">✕ Close</button>
+            </div>
+            <iframe
+            src="https://docs.google.com/forms/d/e/1FAIpQLSdS-vCMkkQPeFpLyR9jFRP9wMOlzFQqsgzwuCEcr5eSQvDG7Q/viewform?embedded=true"
+            frameborder="0"
+            marginheight="0"
+            marginwidth="0"
+            title="Registration Form">
+            Loading…
+        </iframe>
     </div>
 
-    <script src="app.js"></script>
-  </body>
+    <!-- footer -->
+    <footer class="footer">
+        <span class="footer-brand">
+            <img src="assets/edutech.png" alt="EduTech STEM Academy" />
+            EduTech <span>STEM</span> Academy
+        </span>
+        <span class="footer-meta">
+            © 2026 · Powered by
+            <img src="assets/bridgetech.png" alt="BridgeTech Systems" />
+        </span>
+    </footer>
+
+</div>
+
+<!-- ── registration modal ── -->
+<div class="modal-overlay" id="modal">
+    <div class="modal">
+        <span class="modal-icon"><i class="fas fa-bolt"></i></span>
+        <h2>Secure your spot</h2>
+        <p>Choose how you'd like to complete your registration for the camp.</p>
+        <div class="modal-choices">
+            <button class="choice-btn" onclick="goExternal()">
+                <span class="choice-icon"><i class="fas fa-external-link-alt"></i></span>
+                <span class="choice-label">Open form</span>
+                <span class="choice-desc">Opens in a new tab</span>
+            </button>
+            <button class="choice-btn" onclick="fillHere()">
+                <span class="choice-icon"><i class="fas fa-edit"></i></span>
+                <span class="choice-label">Fill out here</span>
+                <span class="choice-desc">Complete directly on this page</span>
+            </button>
+        </div>
+        <button class="modal-close" onclick="closeModal()"><i class="fas fa-arrow-left" style="margin-right:6px;"></i> Go back</button>
+    </div>
+</div>
+
+<!-- ── share modal ── -->
+<div class="modal-overlay" id="share-modal">
+    <div class="modal">
+        <span class="modal-icon"><i class="fas fa-share-alt"></i></span>
+        <h2>Share the Camp</h2>
+        <p>Invite friends to join the future of STEM!</p>
+        <div class="share-grid">
+            <button onclick="shareTo('whatsapp')" class="share-btn"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+            <button onclick="shareTo('discord')" class="share-btn"><i class="fab fa-discord"></i> Discord</button>
+            <button onclick="shareTo('twitter')" class="share-btn"><i class="fab fa-twitter"></i> Twitter</button>
+            <button onclick="shareTo('facebook')" class="share-btn"><i class="fab fa-facebook"></i> Facebook</button>
+            <button onclick="shareTo('tiktok')" class="share-btn"><i class="fab fa-tiktok"></i> TikTok</button>
+            <button onclick="shareTo('copy')" class="share-btn"><i class="fas fa-link"></i> Copy Link</button>
+        </div>
+        <button class="modal-close" onclick="closeShareModal()"><i class="fas fa-times"></i> Close</button>
+    </div>
+</div>
+
+<script>
+    /* ── dynamic spot counter ── */
+    let spots = 213;
+    const spotElement = document.getElementById('spot-counter');
+    if (spotElement) {
+        spotElement.textContent = spots;
+        setInterval(() => {
+            if (spots > 0) {
+                spots--;
+                spotElement.textContent = spots;
+            }
+        }, 60000); // 60000 ms = 1 min
+    }
+
+    /* ── registration modal ── */
+    function openModal() {
+        document.getElementById('modal').classList.add('open');
+    }
+
+    function closeModal() {
+        document.getElementById('modal').classList.remove('open');
+    }
+
+    function goExternal() {
+        closeModal();
+        window.open('https://forms.gle/VmpwuPj1RxMTsrCj8', '_blank');
+    }
+
+    function fillHere() {
+        closeModal();
+        const panel = document.getElementById('form-panel');
+        panel.classList.add('visible');
+        setTimeout(() => {
+            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 120);
+    }
+
+    function closeForm() {
+        const panel = document.getElementById('form-panel');
+        panel.classList.remove('visible');
+        document.getElementById('cta-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // close modal on overlay click
+    document.getElementById('modal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    // close modal with escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    /* ── share modal ── */
+    function openShareModal() {
+        // If Web Share API is available, use it natively
+        if (navigator.share) {
+            navigator.share({
+                title: 'Future Innovators STEM & Robotics Camp 2026',
+                text: 'Check this out! EduTech is having a robotics camp and stuff like that',
+                url: window.location.href,
+            }).catch(() => {});
+            return;
+        }
+        document.getElementById('share-modal').classList.add('open');
+    }
+
+    function closeShareModal() {
+        document.getElementById('share-modal').classList.remove('open');
+    }
+
+    function shareTo(platform) {
+        const url = encodeURIComponent(window.location.href);
+        const text = encodeURIComponent("Check this out! EduTech is having a robotics camp and stuff like that");
+        let shareUrl = '';
+
+        switch (platform) {
+            case 'whatsapp':
+                shareUrl = `https://wa.me/?text=${text}%20${url}`;
+                break;
+            case 'discord':
+                // Discord doesn't have a clean web intent, copy link instead
+                navigator.clipboard.writeText(`${decodeURIComponent(text)} ${decodeURIComponent(url)}`).then(() => {
+                    alert('Link copied! Share it on Discord.');
+                }).catch(() => {});
+                closeShareModal();
+                return;
+            case 'twitter':
+                shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+                break;
+            case 'facebook':
+                shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`;
+                break;
+            case 'tiktok':
+                // TikTok doesn't have a standard web intent. Copy link instead.
+                navigator.clipboard.writeText(`${decodeURIComponent(text)} ${decodeURIComponent(url)}`).then(() => {
+                    alert('Link copied! Share it on TikTok.');
+                }).catch(() => {});
+                closeShareModal();
+                return;
+            case 'copy':
+                navigator.clipboard.writeText(`${decodeURIComponent(text)} ${decodeURIComponent(url)}`).then(() => {
+                    alert('Link copied!');
+                }).catch(() => {});
+                closeShareModal();
+                return;
+            default:
+                return;
+        }
+        if (shareUrl) {
+            window.open(shareUrl, '_blank');
+        }
+        closeShareModal();
+    }
+
+    // close share modal on overlay click
+    document.getElementById('share-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeShareModal();
+    });
+
+    // smooth anchor scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+</script>
+
+</body>
 </html>
