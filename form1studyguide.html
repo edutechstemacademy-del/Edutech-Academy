@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Form 1 IT Exam Study Guide</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-rail" aria-label="Study zones">
+        <div class="brand-block">
+          <div class="brand-mark" aria-hidden="true">IT</div>
+          <div>
+            <h1>Form 1 IT</h1>
+            <p>Term 3 revision</p>
+          </div>
+        </div>
+
+        <nav class="module-nav" id="moduleNav" aria-label="Exam topics"></nav>
+
+        <section class="progress-card" aria-labelledby="overallProgressTitle">
+          <div class="progress-head">
+            <h2 id="overallProgressTitle">Readiness</h2>
+            <strong id="overallPercent">0%</strong>
+          </div>
+          <div class="meter" aria-hidden="true">
+            <span id="overallMeter"></span>
+          </div>
+          <dl class="mini-stats">
+            <div>
+              <dt>Correct</dt>
+              <dd id="correctCount">0</dd>
+            </div>
+            <div>
+              <dt>Review</dt>
+              <dd id="reviewCount">0</dd>
+            </div>
+            <div>
+              <dt>Confidence</dt>
+              <dd id="confidenceLabel">Set it</dd>
+            </div>
+          </dl>
+          <button class="ghost-button" id="resetProgress" type="button">
+            <span class="button-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 7h10a6 6 0 1 1-5.3 8.8" /><path d="M4 7l4-4M4 7l4 4" /></svg>
+            </span>
+            Reset progress
+          </button>
+        </section>
+      </aside>
+
+      <main class="study-stage">
+        <header class="top-bar">
+          <div>
+            <p class="source-line">Waterloo Secondary School final exam study guide</p>
+            <h2 id="moduleTitle">Exam Snapshot</h2>
+          </div>
+          <div class="exam-clock" aria-label="Exam duration">
+            <span>Exam time</span>
+            <strong>1h 30m</strong>
+          </div>
+        </header>
+
+        <div class="mode-tabs" role="tablist" aria-label="Study mode">
+          <button class="tab-button is-active" data-tab="learn" role="tab" aria-selected="true" type="button">Learn</button>
+          <button class="tab-button" data-tab="walkthrough" role="tab" aria-selected="false" type="button">Walkthrough</button>
+          <button class="tab-button" data-tab="quiz" role="tab" aria-selected="false" type="button">Quiz</button>
+          <button class="tab-button" data-tab="short" role="tab" aria-selected="false" type="button">Short Answer</button>
+        </div>
+
+        <section class="content-grid">
+          <article class="lesson-panel" id="lessonPanel" tabindex="-1"></article>
+
+          <aside class="coach-panel" aria-labelledby="coachTitle">
+            <div class="coach-head">
+              <div>
+                <p class="panel-label">Self assessment</p>
+                <h2 id="coachTitle">Quiz coach</h2>
+              </div>
+              <button class="icon-button" id="markReview" type="button" aria-label="Mark topic for review">
+                <svg viewBox="0 0 24 24"><path d="M6 4h12v16l-6-3-6 3z" /></svg>
+              </button>
+            </div>
+
+            <div class="quiz-card" id="sideQuiz"></div>
+
+            <section class="confidence-box" aria-labelledby="confidenceTitle">
+              <h3 id="confidenceTitle">How ready do you feel?</h3>
+              <div class="confidence-options" id="confidenceOptions"></div>
+            </section>
+
+            <section class="target-box" aria-labelledby="targetTitle">
+              <h3 id="targetTitle">Revision targets</h3>
+              <ul id="targetList"></ul>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
