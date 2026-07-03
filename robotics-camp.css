@@ -54,6 +54,7 @@
 .poster-copy,
 .poster-band figure,
 .instructor-card,
+.junior-instructor-card,
 .club-story-grid,
 .camp-register > * {
   position: relative;
@@ -118,6 +119,7 @@
 .camp-section-heading > p,
 .poster-copy > p,
 .instructor-copy > p:first-child,
+.junior-instructor-copy > p:first-child,
 .camp-register > div:first-child > p:first-child {
   margin: 0 0 16px;
   color: var(--gold);
@@ -327,6 +329,7 @@
 .camp-section-heading h2,
 .poster-copy h2,
 .instructor-copy h2,
+.junior-instructor-copy h2,
 .camp-register h2 {
   margin: 0;
   color: var(--navy-deep);
@@ -495,6 +498,7 @@
 .camp-journey p,
 .poster-copy li,
 .instructor-copy p,
+.junior-instructor-copy p,
 .club-story-grid p,
 .camp-register-detail {
   color: var(--muted);
@@ -647,6 +651,134 @@
   font-weight: 900;
 }
 
+.junior-instructor-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.98fr) minmax(360px, 0.82fr);
+  gap: clamp(28px, 4vw, 54px);
+  align-items: center;
+  max-width: 1180px;
+  margin: 28px auto 0;
+  padding: clamp(24px, 4vw, 46px);
+  border: 1px solid rgba(16, 36, 52, 0.12);
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(40, 179, 180, 0.14), transparent 28%),
+    #f8fbfc;
+  box-shadow: 0 24px 62px rgba(0, 59, 95, 0.1);
+}
+
+.junior-instructor-copy h2 {
+  color: var(--navy-deep);
+}
+
+.junior-highlights {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.junior-highlights span {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 15px;
+  border: 1px solid rgba(16, 36, 52, 0.1);
+  border-radius: 18px;
+  background: var(--white);
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.junior-highlights svg {
+  grid-row: 1 / 3;
+  width: 28px;
+  height: 28px;
+  color: var(--coral);
+}
+
+.junior-highlights span:nth-child(2) svg {
+  color: var(--teal-dark);
+}
+
+.junior-highlights span:nth-child(3) svg {
+  color: var(--green);
+}
+
+.junior-highlights strong {
+  display: block;
+  color: var(--navy);
+  font-size: 0.95rem;
+  font-weight: 900;
+}
+
+.junior-instructor-visual {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.78fr) minmax(160px, 1fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.junior-profile-frame,
+.junior-photo-grid figure {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+}
+
+.junior-profile-frame img,
+.junior-photo-grid img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.junior-profile-frame img {
+  min-height: 430px;
+  border-radius: 28px;
+  object-position: 72% center;
+}
+
+.junior-photo-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.junior-photo-grid figure {
+  min-height: 132px;
+}
+
+.junior-photo-grid img {
+  border-radius: 20px;
+}
+
+.junior-photo-grid figure:nth-child(1) img {
+  object-position: center;
+}
+
+.junior-photo-grid figure:nth-child(2) img {
+  object-position: 58% center;
+}
+
+.junior-profile-frame figcaption,
+.junior-photo-grid figcaption {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  padding: 9px 11px;
+  border-radius: 999px;
+  background: rgba(4, 47, 69, 0.86);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-align: center;
+}
+
 .robotics-club-section {
   background: #f8fbfc;
 }
@@ -728,6 +860,7 @@
 
   .camp-facts,
   .camp-journey,
+  .junior-highlights,
   .club-story-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -770,8 +903,14 @@
   .hero-visual,
   .cycle-card,
   .instructor-card,
+  .junior-instructor-card,
+  .junior-instructor-visual,
   .bio-metrics {
     grid-template-columns: 1fr;
+  }
+
+  .junior-profile-frame img {
+    min-height: 320px;
   }
 
   .camp-facts > div,
@@ -794,6 +933,7 @@
   }
 
   .club-story-grid,
+  .junior-highlights,
   .camp-journey {
     grid-template-columns: 1fr;
   }
@@ -860,6 +1000,15 @@
   .instructor-card {
     padding: 18px;
     border-radius: 24px;
+  }
+
+  .junior-instructor-card {
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .junior-photo-grid figure {
+    min-height: 180px;
   }
 
   .camp-email-address {
