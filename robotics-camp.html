@@ -439,6 +439,113 @@
           </a>
         </div>
         <a class="camp-email-address" href="mailto:edutechstemacademy@gmail.com">edutechstemacademy@gmail.com</a>
+
+        <form
+          class="camp-registration-form"
+          name="robotics-camp-registration"
+          method="POST"
+          action="/robotics-camp-thank-you"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+        >
+          <input type="hidden" name="form-name" value="robotics-camp-registration" />
+          <input type="hidden" name="subject" value="New EduTech STEM Academy Robotics Camp Registration" />
+          <p class="hidden-field">
+            <label>Do not fill this out: <input name="bot-field" /></label>
+          </p>
+
+          <div class="form-grid">
+            <label class="form-field">
+              Parent/Guardian name
+              <input type="text" name="parent_guardian_name" autocomplete="name" required />
+            </label>
+            <label class="form-field">
+              WhatsApp / phone
+              <input type="tel" name="phone" autocomplete="tel" required />
+            </label>
+            <label class="form-field">
+              Email address
+              <input type="email" name="email" autocomplete="email" required />
+            </label>
+            <label class="form-field">
+              Preferred cycle
+              <select name="preferred_cycle" required>
+                <option value="">Select a camp cycle</option>
+                <option value="Cycle 1 - July 14 to 23">Cycle 1 - July 14 to 23</option>
+                <option value="Cycle 2 - July 29 to August 6">Cycle 2 - July 29 to August 6</option>
+                <option value="Cycle 3 - August 11 to 20">Cycle 3 - August 11 to 20</option>
+              </select>
+            </label>
+            <label class="form-field">
+              Student name
+              <input type="text" name="student_name" autocomplete="off" required />
+            </label>
+            <label class="form-field">
+              Student age
+              <input type="number" name="student_age" min="8" max="16" required />
+            </label>
+            <label class="form-field">
+              School
+              <input type="text" name="school" autocomplete="organization" />
+            </label>
+            <label class="form-field">
+              Registration option
+              <select name="registration_option" required>
+                <option value="">Select an option</option>
+                <option value="1 child - TTD 600">1 child - TTD $600</option>
+                <option value="2 children - TTD 1000">2 children - TTD $1,000</option>
+                <option value="More than 2 children - contact me">More than 2 children - contact me</option>
+              </select>
+            </label>
+            <label class="form-field">
+              Robotics kit
+              <select name="robotics_kit_interest" required>
+                <option value="">Select kit option</option>
+                <option value="I want to purchase the take-home kit - TTD 600">I want to purchase the take-home kit - TTD $600</option>
+                <option value="I am interested but need more information">I am interested but need more information</option>
+                <option value="No kit purchase at this time">No kit purchase at this time</option>
+              </select>
+            </label>
+            <label class="form-field">
+              Experience level
+              <select name="experience_level" required>
+                <option value="">Select experience level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Some coding experience">Some coding experience</option>
+                <option value="Has built or programmed a robot before">Has built or programmed a robot before</option>
+              </select>
+            </label>
+            <label class="form-field full">
+              Additional child name and age
+              <input type="text" name="additional_child_details" placeholder="Only complete this if registering more than one child" />
+            </label>
+            <label class="form-field full">
+              Medical notes, allergies, or learning needs
+              <textarea name="medical_or_learning_notes" rows="4" placeholder="Share anything instructors should know before camp"></textarea>
+            </label>
+          </div>
+
+          <div class="checkbox-stack">
+            <label class="form-check">
+              <input type="checkbox" name="venue_acknowledgement" required />
+              I understand that the exact Chaguanas venue will be supplied after registration.
+            </label>
+            <label class="form-check">
+              <input type="checkbox" name="parent_guardian_consent" required />
+              I am the parent/guardian and I give permission for the student to participate in robotics camp activities.
+            </label>
+            <label class="form-check">
+              <input type="checkbox" name="media_consent" />
+              I give permission for photos or short videos from camp activities to be used for EduTech STEM Academy updates.
+            </label>
+          </div>
+
+          <button class="button primary form-submit" type="submit">
+            <i data-lucide="send" aria-hidden="true"></i>
+            Submit Registration
+          </button>
+          <p class="form-note">After submitting, we will contact you to confirm availability, payment details, and venue information.</p>
+        </form>
       </section>
     </main>
 
