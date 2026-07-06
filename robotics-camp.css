@@ -51,6 +51,9 @@
 .camp-section-heading,
 .cycle-grid,
 .camp-journey,
+.curriculum-header,
+.curriculum-grid,
+.student-guide-callout,
 .poster-copy,
 .poster-band figure,
 .instructor-card,
@@ -307,6 +310,7 @@
 
 .camp-cycles,
 .camp-experience,
+.camp-curriculum,
 .poster-band,
 .instructor-section,
 .robotics-club-section,
@@ -452,6 +456,168 @@
 
 .camp-experience {
   background: var(--white);
+}
+
+.camp-curriculum {
+  background:
+    radial-gradient(circle at 88% 8%, rgba(40, 179, 180, 0.16), transparent 26%),
+    linear-gradient(180deg, #f8fbfc 0%, #ffffff 100%);
+}
+
+.curriculum-header {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.52fr);
+  gap: clamp(24px, 4vw, 54px);
+  align-items: end;
+}
+
+.curriculum-summary {
+  display: grid;
+  gap: 18px;
+  justify-items: start;
+}
+
+.curriculum-summary p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.curriculum-download {
+  gap: 9px;
+  background: var(--navy);
+  color: var(--white);
+}
+
+.curriculum-download:hover {
+  background: var(--navy-deep);
+}
+
+.curriculum-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 38px;
+}
+
+.curriculum-day {
+  position: relative;
+  overflow: hidden;
+  min-height: 234px;
+  padding: 24px;
+  border: 1px solid rgba(16, 36, 52, 0.12);
+  border-radius: 22px;
+  background: var(--white);
+  box-shadow: 0 16px 44px rgba(0, 59, 95, 0.08);
+}
+
+.curriculum-day::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 6px;
+  content: "";
+  background: var(--teal-dark);
+}
+
+.curriculum-day:nth-child(1)::before {
+  background: #ff9f2f;
+}
+
+.curriculum-day:nth-child(2)::before {
+  background: #28b3b4;
+}
+
+.curriculum-day:nth-child(3)::before {
+  background: #23995f;
+}
+
+.curriculum-day:nth-child(4)::before {
+  background: var(--navy);
+}
+
+.curriculum-day:nth-child(5)::before {
+  background: var(--coral);
+}
+
+.curriculum-day:nth-child(6)::before {
+  background: var(--gold);
+}
+
+.curriculum-day > span {
+  display: inline-flex;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: var(--soft);
+  color: var(--navy);
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.curriculum-day svg {
+  display: block;
+  width: 34px;
+  height: 34px;
+  margin-top: 24px;
+  color: var(--coral);
+}
+
+.curriculum-day:nth-child(2) svg,
+.curriculum-day:nth-child(4) svg {
+  color: var(--teal-dark);
+}
+
+.curriculum-day:nth-child(3) svg,
+.curriculum-day:nth-child(6) svg {
+  color: var(--green);
+}
+
+.curriculum-day h3 {
+  margin: 18px 0 0;
+  color: var(--navy);
+  font-size: 1.34rem;
+}
+
+.curriculum-day p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.student-guide-callout {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: 22px;
+  background: var(--navy-deep);
+  color: var(--white);
+  box-shadow: 0 18px 48px rgba(0, 59, 95, 0.14);
+}
+
+.student-guide-callout > svg {
+  width: 42px;
+  height: 42px;
+  color: var(--gold);
+}
+
+.student-guide-callout h3 {
+  margin: 0;
+  color: var(--white);
+  font-size: 1.28rem;
+}
+
+.student-guide-callout p {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 700;
+  line-height: 1.55;
 }
 
 .camp-journey {
@@ -842,6 +1008,7 @@
 
 @media (max-width: 1120px) {
   .camp-hero,
+  .curriculum-header,
   .poster-band,
   .camp-register {
     grid-template-columns: 1fr;
@@ -860,6 +1027,7 @@
 
   .camp-facts,
   .camp-journey,
+  .curriculum-grid,
   .junior-highlights,
   .club-story-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -902,6 +1070,7 @@
   .camp-facts,
   .hero-visual,
   .cycle-card,
+  .student-guide-callout,
   .instructor-card,
   .junior-instructor-card,
   .junior-instructor-visual,
@@ -934,6 +1103,7 @@
 
   .club-story-grid,
   .junior-highlights,
+  .curriculum-grid,
   .camp-journey {
     grid-template-columns: 1fr;
   }
@@ -947,6 +1117,7 @@
   .camp-hero,
   .camp-cycles,
   .camp-experience,
+  .camp-curriculum,
   .poster-band,
   .instructor-section,
   .robotics-club-section,
