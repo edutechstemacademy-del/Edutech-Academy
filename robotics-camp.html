@@ -25,6 +25,7 @@
       </a>
       <nav class="nav-links" aria-label="Camp page sections">
         <a href="#cycles">Dates</a>
+        <a href="#location">Location</a>
         <a href="#experience">Experience</a>
         <a href="#curriculum">Curriculum</a>
         <a href="#instructor">Instructor</a>
@@ -163,6 +164,65 @@
               <li><span>Thu</span><strong>Aug 20</strong></li>
             </ul>
           </article>
+        </div>
+      </section>
+
+      <section class="camp-location" id="location" aria-labelledby="location-title">
+        <div class="camp-section-heading">
+          <p>Find your way</p>
+          <h2 id="location-title">Getting to robotics camp is simple.</h2>
+          <span class="section-price">Chaguanas • Landmark: Shalom Salon</span>
+        </div>
+
+        <div class="location-grid">
+          <div class="location-map-card">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!4v1785497510210!6m8!1m7!1sCAoSFkNJSE0wb2dLRUlDQWdJRG00ZDZhZUE.!2m2!1d10.49855601773864!2d-61.40794837877352!3f102.68259386564777!4f-21.10099138109662!5f0.4000000000000002"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+              title="Map to the robotics camp location"
+            ></iframe>
+            <a
+              class="button primary location-directions"
+              href="https://www.google.com/maps/place/Shalom+Salon/@10.498556,-61.4079484,3a,90y,102.68h,68.9t/data=!3m8!1e1!3m6!1sCIHM0ogKEICAgIDm4d6aeA!2e10!3e11!6shttps:%2F%2Flh3.googleusercontent.com%2Fgpms-cs-s%2FAFP8RcNylw-uD-5K2U9U1IZmMoqznxZvJAXJbtCD22bDLBNRSQvkz7v-hRjxJ3ZKlXIb04FnItuDpt1asrpamzvhg7JvcUIlr97K6BIi_w7xuw1CBRfblaBbE0pNnDcLtZPtvr4sxAYq%3Dw900-h600-k-no-pi21.10099138109662-ya271.7984843685775-ro0-fo100!7i7680!8i3840!4m14!1m7!3m6!1s0x8c35f95a08ba4f6d:0x6f24099b426824e1!2sShalom+Salon!8m2!3d10.4984638!4d-61.4078172!16s%2Fg%2F11xs36pwqx!3m5!1s0x8c35f95a08ba4f6d:0x6f24099b426824e1!8m2!3d10.4984638!4d-61.4078172!16s%2Fg%2F11xs36pwqx?entry=ttu&g_ep=EgoyMDI2MDcyOC4wIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i data-lucide="navigation" aria-hidden="true"></i>
+              Get Directions
+            </a>
+          </div>
+
+          <button type="button" class="location-video-card" aria-label="Play a full screen preview of the route to camp">
+            <video class="location-video-preview" src="assets/locationvid.mp4" autoplay muted loop playsinline></video>
+            <span class="location-video-badge">
+              <i data-lucide="maximize-2" aria-hidden="true"></i>
+              Preview the route
+            </span>
+          </button>
+        </div>
+
+        <div class="location-details">
+          <div>
+            <i data-lucide="map-pin" aria-hidden="true"></i>
+            <span>Landmark</span>
+            <strong>Shalom Salon</strong>
+            <small>Chaguanas, Trinidad</small>
+          </div>
+          <div>
+            <i data-lucide="car" aria-hidden="true"></i>
+            <span>Parking</span>
+            <strong>Available onsite</strong>
+            <small>Drop-off and pickup zone marked</small>
+          </div>
+          <div>
+            <i data-lucide="message-circle" aria-hidden="true"></i>
+            <span>Need help finding us?</span>
+            <strong>WhatsApp 460-3810</strong>
+            <small>We will guide you in</small>
+          </div>
         </div>
       </section>
 
@@ -549,6 +609,15 @@
       </section>
     </main>
 
+    <div class="location-video-modal" id="location-video-modal">
+      <div class="location-video-modal-frame">
+        <button type="button" class="location-video-close" aria-label="Close video preview">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+        <video src="assets/locationvid.mp4" autoplay muted loop playsinline></video>
+      </div>
+    </div>
+
     <footer class="site-footer">
       <div class="footer-links">
         <span>EduTech STEM Academy</span>
@@ -568,9 +637,43 @@
         window.lucide.createIcons({ attrs: { "stroke-width": 2.2 } });
       }
     </script>
+    <script>
+      (function () {
+        var trigger = document.querySelector(".location-video-card");
+        var modal = document.getElementById("location-video-modal");
+        if (!trigger || !modal) return;
+
+        var closeButton = modal.querySelector(".location-video-close");
+        var modalVideo = modal.querySelector("video");
+
+        function openModal() {
+          modal.classList.add("is-open");
+          document.body.classList.add("modal-open");
+          if (modalVideo) {
+            modalVideo.currentTime = 0;
+            modalVideo.play().catch(function () {});
+          }
+        }
+
+        function closeModal() {
+          modal.classList.remove("is-open");
+          document.body.classList.remove("modal-open");
+          if (modalVideo) modalVideo.pause();
+        }
+
+        trigger.addEventListener("click", openModal);
+        closeButton.addEventListener("click", closeModal);
+
+        modal.addEventListener("click", function (event) {
+          if (event.target === modal) closeModal();
+        });
+
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape" && modal.classList.contains("is-open")) {
+            closeModal();
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
-
-
-
-
